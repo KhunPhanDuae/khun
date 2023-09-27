@@ -5,7 +5,11 @@ My Awesome Website မှ ကြိုဆိုပါတယ်။ ဤဝဘ်�
 
 ## Usage
 
-Visit the live website [here](https://KhunPhanDuae7.github.io).
+တိုက်ရိုက်ဝဘ်ဆိုဒ်ကို ဝင်ကြည့်ပါ [ဒီမှာ](https://KhunPhanDuae/KhunPhanDuae7.github.io).
+
+## ဝဲက်သိုက်အလင်
+
+လွေꩻထွားနွောင်ꩻဒျာႏဝဲက်သုဲက် [ယိုကို](https://khunderan.wixsite.com/khunphanduae7).
 
 ## Installation
 
