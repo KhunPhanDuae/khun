@@ -174,3 +174,36 @@ gap:15px;
 margin-top:20px;
 
 }
+.market-module{
+
+margin-top:30px;
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(250px,1fr));
+
+gap:15px;
+
+}
+
+
+
+.research-card{
+
+background:white;
+
+padding:20px;
+
+border-radius:12px;
+
+box-shadow:0 2px 8px rgba(0,0,0,.1);
+
+}
+
+
+.research-card h3{
+
+margin-bottom:15px;
+
+}
