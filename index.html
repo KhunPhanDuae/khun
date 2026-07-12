@@ -5,261 +5,252 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BI & Market Research Dashboard</title>
     <style>
-        :root {
-            --primary-color: #0056b3;
-            --bg-color: #f0f2f5;
-            --text-color: #333;
-        }
         body {
-            font-family: 'Segoe UI', Pyidaungsu, sans-serif;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
             margin: 0;
             padding: 20px;
-            background-color: var(--bg-color);
-            color: var(--text-color);
         }
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: auto;
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
-        h2, h3 {
-            color: var(--primary-color);
+        h1 {
             text-align: center;
-            border-bottom: 2px solid #ddd;
-            padding-bottom: 10px;
+            color: #2c3e50;
         }
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+        h2 {
+            color: #2980b9;
+        }
+        .info-panel {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             margin-bottom: 20px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .form-panel {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
         }
         .form-group {
-            display: flex;
-            flex-direction: column;
+            margin-bottom: 15px;
         }
-        .form-group.full-width {
-            grid-column: span 2;
-        }
-        label {
+        .form-group label {
+            display: block;
             font-weight: bold;
             margin-bottom: 5px;
-            font-size: 14px;
         }
-        input, select, textarea {
+        .form-group select, .form-group input, .form-group textarea {
+            width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-            font-family: inherit;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
         }
         button {
-            padding: 12px 20px;
-            border: none;
-            background-color: #28a745;
+            background: #27ae60;
             color: white;
-            border-radius: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
-            font-weight: bold;
             font-size: 16px;
-            transition: 0.3s;
-            width: 100%;
         }
-        button:hover { background-color: #218838; }
-        button:disabled { background-color: #6c757d; cursor: not-allowed; }
-        .refresh-btn { background-color: var(--primary-color); margin-bottom: 15px; width: auto; }
-        .refresh-btn:hover { background-color: #004494; }
-        
-        .table-container {
-            overflow-x: auto;
+        button:hover {
+            background: #219150;
+        }
+        .data-panel {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
-            background: white;
+            margin-top: 15px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
         }
         th, td {
-            border: 1px solid #ddd;
             padding: 12px;
             text-align: left;
-            font-size: 14px;
         }
         th {
-            background-color: var(--primary-color);
+            background-color: #2c3e50;
             color: white;
-            position: sticky;
-            top: 0;
         }
-        tr:nth-child(even) { background-color: #f9f9f9; }
-        tr:hover { background-color: #f1f1f1; }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        #loading {
+            text-align: center;
+            font-weight: bold;
+            color: #e67e22;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>📊 BI & Market Research Real-Time Dashboard</h2>
-    <p style="text-align:center; font-size: 14px; color: #666;">
-        ဈေးကွက်၊ ပြိုင်ဘက်၊ ငွေကြေး နှင့် ကမ္ဘာ့စီးပွားရေး အချက်အလက်များကို အချိန်နှင့်တပြေးညီ စောင့်ကြည့်ရန်
-    </p>
+    <h1>📊 Business Intelligence & Market Research</h1>
 
-    <!-- Data Entry Form -->
-    <form id="biForm">
-        <div class="form-grid">
+    <!-- ရှင်းလင်းချက် အကျဉ်း -->
+    <div class="info-panel">
+        <h2>လုပ်ငန်းအတွက် အဓိက စောင့်ကြည့်ရမည့် အချက်အလက်များ</h2>
+        <p><strong>၁။ နေရာပြ၊ အချိန်အခါနှင့် အမူအကျင့်:</strong> ဈေးကွက်တည်နေရာ၊ ခေတ်ရေစီးကြောင်းနှင့် ဝယ်သူ၏ စိတ်နေသဘောထား (Consumer Behavior)။</p>
+        <p><strong>၂။ ပြိုင်ဘက်နှင့် အန္တရာယ်:</strong> ပြိုင်ဘက်များ၏ လှုပ်ရှားမှု၊ ငွေကြေးဖောင်းပွမှုနှင့် ဥပဒေဆိုင်ရာ ကန့်သတ်ချက်များ။</p>
+        <p><strong>၃။ ငွေကြေးနှင့် လုံခြုံရေး:</strong> လည်ပတ်ငွေ (Cash Flow)၊ အရောင်းစာရင်းနှင့် ဆိုက်ဘာလုံခြုံရေး (Data Security)။</p>
+    </div>
+
+    <!-- Data ရိုက်သွင်းရန် Form -->
+    <div class="form-panel">
+        <h2>Data အသစ်ထည့်သွင်းရန်</h2>
+        <form id="biForm">
             <div class="form-group">
-                <label>ရက်စွဲ (Date)</label>
-                <input type="date" id="dateInput" required>
+                <label for="category">အချက်အလက် အမျိုးအစား (Category)</label>
+                <select id="category" required>
+                    <option value="နေရာပြ အချက်အလက် (Market Demand & Location)">နေရာပြ အချက်အလက် (Market Demand & Location)</option>
+                    <option value="အချိန်အခါ အချက်အလက် (Trends & Seasonality)">အချိန်အခါ အချက်အလက် (Trends & Seasonality)</option>
+                    <option value="အန္တရာယ်နှင့် ပြိုင်ဘက် (Risk & Competitor Intelligence)">အန္တရာယ်နှင့် ပြိုင်ဘက် (Risk & Competitor Intelligence)</option>
+                    <option value="ဝယ်သူ၏ အမူအကျင့် (Consumer Behavior)">ဝယ်သူ၏ အမူအကျင့် (Consumer Behavior)</option>
+                    <option value="လုပ်ငန်းလမ်းညွှန် (Roadmap & KPI)">လုပ်ငန်းလမ်းညွှန် (Roadmap & KPI)</option>
+                    <option value="ငွေကြေးလုံခြုံမှုနှင့် အရောင်း (Financial Health & Sales)">ငွေကြေးလုံခြုံမှုနှင့် အရောင်း (Financial Health & Sales)</option>
+                    <option value="မူဝါဒနှင့် ဥပဒေ (Policy, Legal & Compliance)">မူဝါဒနှင့် ဥပဒေ (Policy, Legal & Compliance)</option>
+                    <option value="ဆိုက်ဘာလုံခြုံရေး (Data Security)">ဆိုက်ဘာလုံခြုံရေး (Data Security)</option>
+                </select>
             </div>
             
             <div class="form-group">
-                <label>အချက်အလက် အမျိုးအစား (Category)</label>
-                <select id="categoryInput" required>
-                    <option value="">ရွေးချယ်ပါ...</option>
-                    <option value="Customer & Demand">၁။ ဝယ်သူ၏ အမူအကျင့်နှင့် ဝယ်လိုအား</option>
-                    <option value="Competitor Intelligence">၂။ ပြိုင်ဘက်များ၏ လှုပ်ရှားမှု</option>
-                    <option value="Internal Financial & Sales">၃။ လုပ်ငန်းတွင်း ငွေကြေးနှင့် အရောင်း</option>
-                    <option value="Macro Environment">၄။ ကမ္ဘာ့စီးပွားရေးနှင့် မူဝါဒ</option>
-                    <option value="Risk & Security">၅။ အန္တရာယ်နှင့် လုံခြုံရေး</option>
-                </select>
+                <label for="information">အသေးစိတ် အချက်အလက် (Information)</label>
+                <textarea id="information" rows="4" placeholder="ဥပမာ - ယနေ့ လူတွေ အင်တာနက်ပေါ်မှာ ဘာကို အရှာဆုံးလဲ..." required></textarea>
             </div>
 
             <div class="form-group">
-                <label>အသုံးပြုသည့် ကိရိယာ (Tools Used)</label>
-                <input type="text" id="toolInput" placeholder="ဥပမာ - Google Trends, SEMrush, Power BI..." required>
+                <label for="tools">အသုံးပြုခဲ့သည့် ကိရိယာ (Tools Used)</label>
+                <input type="text" id="tools" placeholder="ဥပမာ - Google Trends, Power BI, Facebook Ad Library" required>
             </div>
 
-            <div class="form-group">
-                <label>တွေ့ရှိချက် အချက်အလက် (Data Point / Insight)</label>
-                <input type="text" id="dataPointInput" placeholder="ဥပမာ - ပြိုင်ဘက်က ဈေး ၁၀% ချရောင်းနေသည်" required>
-            </div>
+            <button type="submit" id="submitBtn">မှတ်တမ်းတင်မည် (Save Data)</button>
+        </form>
+    </div>
 
-            <div class="form-group full-width">
-                <label>လုပ်ဆောင်မည့် အစီအစဉ် / ရလဒ် (Action Plan / Result)</label>
-                <textarea id="actionPlanInput" rows="3" placeholder="ဥပမာ - မိမိလုပ်ငန်းက သာလွန်အောင် ပရိုမိုးရှင်း အသစ်ဆွဲမည်..." required></textarea>
-            </div>
-        </div>
-        <button type="submit" id="submitBtn">အချက်အလက်များကို သိမ်းဆည်းမည် (Submit Data)</button>
-    </form>
-
-    <hr style="margin: 30px 0; border: 1px solid #eee;">
-
-    <h3>📈 စောင့်ကြည့်လေ့လာထားသော အချက်အလက်များ</h3>
-    <button class="refresh-btn" onclick="loadData()">🔄 Data များကို ပြန်လည်ဆွဲယူမည် (Refresh)</button>
-
-    <div class="table-container">
-        <table id="dataTable">
+    <!-- Data ပြသရန် Table -->
+    <div class="data-panel">
+        <h2>စောင့်ကြည့် လေ့လာမှု မှတ်တမ်းများ (Real-time Dashboard)</h2>
+        <p id="loading">အချက်အလက်များကို ဆွဲယူနေပါသည် (Loading...)</p>
+        <button onclick="fetchData()" style="background:#2980b9; margin-bottom: 10px;">🔄 Refresh Data</button>
+        
+        <table id="dataTable" style="display:none;">
             <thead>
                 <tr>
-                    <th>ရက်စွဲ</th>
-                    <th>အမျိုးအစား</th>
-                    <th>တွေ့ရှိချက်</th>
-                    <th>အသုံးပြုသည့် Tool</th>
-                    <th>လုပ်ဆောင်မည့် အစီအစဉ်</th>
+                    <th>ရက်စွဲ (Date)</th>
+                    <th>အမျိုးအစား (Category)</th>
+                    <th>အသေးစိတ် (Information)</th>
+                    <th>ကိရိယာ (Tools)</th>
                 </tr>
             </thead>
-            <tbody>
-                <!-- Data များ ဤနေရာတွင် ပေါ်လာမည် -->
+            <tbody id="tableBody">
+                <!-- Data များ ဤနေရာတွင် ဝင်လာပါမည် -->
             </tbody>
         </table>
     </div>
 </div>
 
 <script>
-    // သင်၏ SheetDB API URL
-    const API_URL = 'https://sheetdb.io/api/v1/6zk630pgtw0p4';
+    // လူကြီးမင်း၏ SheetDB API Link
+    const API_URL = "https://sheetdb.io/api/v1/6zk630pgtw0p4";
 
-    // (၁) အချက်အလက်များ ဆွဲယူခြင်း (GET Request)
-    async function loadData() {
-        const tbody = document.querySelector('#dataTable tbody');
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">အချက်အလက်များ ရှာဖွေနေပါသည်... (Loading...)</td></tr>';
+    // Google Sheet မှ Data များကို ဆွဲယူပြသသည့် Function (GET request)
+    function fetchData() {
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('dataTable').style.display = 'none';
         
-        try {
-            const response = await fetch(API_URL);
-            if (!response.ok) throw new Error('Network Error');
-            
-            const data = await response.json();
-            tbody.innerHTML = ''; 
-            
-            // ဒေတာမရှိပါက ပြသမည့်စာ
-            if(data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">အချက်အလက်များ မရှိသေးပါ။</td></tr>';
-                return;
-            }
-            
-            // နောက်ဆုံးသွင်းထားသော Data ကို အပေါ်ဆုံးမှာပြရန် .reverse()
-            data.reverse().forEach(row => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${row.Date || '-'}</td>
-                    <td><span style="background-color:#e9ecef; padding:4px 8px; border-radius:4px; font-size:12px;">${row.Category || '-'}</span></td>
-                    <td>${row.Data_Point || '-'}</td>
-                    <td>${row.Tool_Used || '-'}</td>
-                    <td>${row.Action_Plan || '-'}</td>
-                `;
-                tbody.appendChild(tr);
+        fetch(API_URL)
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('tableBody');
+                tableBody.innerHTML = ''; // ယခင်ဒေတာများကို ရှင်းလင်းရန်
+
+                // ဒေတာအသစ်ဆုံးကို အပေါ်ဆုံးမှာ ပြရန် reverse လုပ်ခြင်း
+                data.reverse().forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${row.Date || '-'}</td>
+                        <td><strong>${row.Category || '-'}</strong></td>
+                        <td>${row.Information || '-'}</td>
+                        <td><span style="color:#c0392b; font-weight:bold;">${row.Tools || '-'}</span></td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('dataTable').style.display = 'table';
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                document.getElementById('loading').innerText = "ဒေတာများ ဆွဲယူရာတွင် အမှားအယွင်းရှိနေပါသည်။";
             });
-        } catch (error) {
-            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:red;">အချက်အလက် ရယူရာတွင် အမှားအယွင်းရှိနေပါသည်။ Data ဆွဲယူ၍မရပါ။</td></tr>';
-            console.error('Fetch Error:', error);
-        }
     }
 
-    // (၂) အချက်အလက်များ ပေးပို့ခြင်း (POST Request - JSON Format)
-    document.getElementById('biForm').addEventListener('submit', async function(e) {
-        e.preventDefault(); // ပုံမှန် Refresh ဖြစ်ခြင်းကို တားမည်
+    // Website မှ Form အချက်အလက်များကို Google Sheet သို့ ပို့သည့် Function (POST request)
+    document.getElementById('biForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Page refresh ဖြစ်ခြင်းကို တားဆီးရန်
         
         const submitBtn = document.getElementById('submitBtn');
-        submitBtn.innerText = 'သိမ်းဆည်းနေပါသည်... (Submitting...)';
+        submitBtn.innerText = "ပို့ဆောင်နေပါသည်...";
         submitBtn.disabled = true;
 
-        // JSON Format ဖြင့်ပို့ရန် Data တည်ဆောက်ခြင်း
-        // Key နာမည်များသည် Google Sheet မှ Column ခေါင်းစဉ်များနှင့် အတိအကျတူရပါမည်
-        const payload = {
-            data: [
-                {
-                    "Date": document.getElementById('dateInput').value,
-                    "Category": document.getElementById('categoryInput').value,
-                    "Tool_Used": document.getElementById('toolInput').value,
-                    "Data_Point": document.getElementById('dataPointInput').value,
-                    "Action_Plan": document.getElementById('actionPlanInput').value
-                }
-            ]
+        // ယနေ့ ရက်စွဲကို ယူရန်
+        const today = new Date();
+        const dateString = today.toLocaleDateString();
+
+        // Form မှ အချက်အလက်များကို ရယူခြင်း
+        const newRecord = {
+            "Date": dateString,
+            "Category": document.getElementById('category').value,
+            "Information": document.getElementById('information').value,
+            "Tools": document.getElementById('tools').value
         };
 
-        try {
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(payload)
-            });
-            
-            const result = await response.json();
-            
-            if(result.created) { // SheetDB မှ အောင်မြင်ကြောင်း (created: 1) ပြန်ပို့လျှင်
-                document.getElementById('biForm').reset(); 
-                await loadData(); // Table ကို ချက်ချင်း Update လုပ်မည်
-                alert("အောင်မြင်စွာ သိမ်းဆည်းပြီးပါပြီ!");
-            } else {
-                throw new Error('Failed to create row');
-            }
-            
-        } catch (error) {
-            alert('အချက်အလက်ပေးပို့ခြင်း မအောင်မြင်ပါ။ Column အမည်များကို Google Sheet တွင် မှန်ကန်စွာရေးထားခြင်း ရှိ/မရှိ စစ်ဆေးပါ။');
-            console.error('Post Error:', error);
-        } finally {
-            submitBtn.innerText = 'အချက်အလက်များကို သိမ်းဆည်းမည် (Submit Data)';
+        // SheetDB သို့ ပို့ဆောင်ခြင်း
+        fetch(API_URL, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                data: [newRecord]
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert("အချက်အလက်များကို အောင်မြင်စွာ မှတ်တမ်းတင်ပြီးပါပြီ။");
+            document.getElementById('biForm').reset(); // Form အလွတ်ပြန်ထားရန်
+            submitBtn.innerText = "မှတ်တမ်းတင်မည် (Save Data)";
             submitBtn.disabled = false;
-        }
+            fetchData(); // ဇယားကို Auto ပြန် Refresh လုပ်ရန်
+        })
+        .catch(error => {
+            console.error('Error saving data:', error);
+            alert("အချက်အလက် ထည့်သွင်းခြင်း မအောင်မြင်ပါ။");
+            submitBtn.innerText = "မှတ်တမ်းတင်မည် (Save Data)";
+            submitBtn.disabled = false;
+        });
     });
 
-    // Website စဖွင့်သည်နှင့် Data ကို အလိုအလျောက် ဆွဲယူမည်
-    window.onload = loadData;
+    // Page စဖွင့်ဖွင့်ချင်း Data များကို တခါတည်း ဆွဲယူပြသရန်
+    window.onload = fetchData;
 </script>
 
 </body>
