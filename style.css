@@ -1,297 +1,604 @@
-*{  
-margin:0;  
-padding:0;  
-box-sizing:border-box;  
-font-family:Arial,sans-serif;  
-}  
-  
-body{  
-display:flex;  
-background:#f3f5f9;  
-}  
-  
-.sidebar{  
-width:250px;  
-background:#1e293b;  
-color:white;  
-height:100vh;  
-padding:20px;  
-}  
-  
-.sidebar h2{  
-margin-bottom:30px;  
-}  
-  
-.sidebar ul{  
-list-style:none;  
-}  
-  
-.sidebar li{  
-padding:12px;  
-margin:6px 0;  
-background:#334155;  
-border-radius:8px;  
-cursor:pointer;  
-}  
-  
-.sidebar li:hover{  
-background:#2563eb;  
-}  
-  
-.main{  
-flex:1;  
-padding:20px;  
-}  
-  
-header{  
-display:flex;  
-justify-content:space-between;  
-align-items:center;  
-margin-bottom:20px;  
-}  
-  
-header input{  
-padding:10px;  
-width:250px;  
-}  
-  
-.cards{  
-display:grid;  
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));  
-gap:15px;  
-}  
-  
-.card{  
-background:white;  
-padding:20px;  
-border-radius:12px;  
-box-shadow:0 2px 8px rgba(0,0,0,.1);  
-}  
-  
-.table{
+/* ==========================================
+   Business Intelligence Dashboard
+   style.css - Part 1
+   Global + Sidebar + Header + Cards
+========================================== */
 
-overflow-x:auto;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-}  
-  
-table{  
-width:100%;  
-border-collapse:collapse;  
-}  
-  
-th,td{  
-padding:12px;  
-border-bottom:1px solid #ddd;  
-text-align:left;  
-}  
-.form{  
-  
-margin-top:30px;  
-  
-background:white;  
-  
-padding:20px;  
-  
-border-radius:10px;  
-  
-}  
-  
-.form input{  
-  
-width:100%;  
-  
-padding:10px;  
-  
-margin:10px 0;  
-  
-}  
-  
-.form button{  
-  
-padding:10px 20px;  
-  
-background:#2563eb;  
-  
-color:white;  
-  
-border:none;  
-  
-border-radius:8px;  
-  
-cursor:pointer;  
-  
-}  
-.form button:hover{
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f3f5f9;
+    color:#333;
+    display:flex;
+    min-height:100vh;
+}
 
-background:#1d4ed8;
+/* Sidebar */
+
+.sidebar{
+    width:250px;
+    background:#1e293b;
+    color:#fff;
+    min-height:100vh;
+    padding:20px;
+    position:sticky;
+    top:0;
+}
+
+.sidebar h2{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.sidebar ul{
+    list-style:none;
+}
+
+.sidebar li{
+    padding:14px;
+    margin-bottom:10px;
+    background:#334155;
+    border-radius:10px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.sidebar li:hover{
+    background:#2563eb;
+    transform:translateX(5px);
+}
+
+/* Main */
+
+.main{
+    flex:1;
+    padding:20px;
+}
+
+/* Header */
+
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+    gap:15px;
+}
+
+header h1{
+    font-size:28px;
+    color:#1e293b;
+}
+
+header input{
+    width:280px;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    outline:none;
+}
+
+header input:focus{
+    border-color:#2563eb;
+}
+
+/* KPI Cards */
+
+.kpi{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-bottom:25px;
+}
+
+/* Dashboard Cards */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:#fff;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 8px 18px rgba(0,0,0,.15);
+}
+
+.card h3{
+    margin-bottom:15px;
+    color:#1e293b;
+    font-size:18px;
+}
+
+.card p{
+    font-size:28px;
+    font-weight:bold;
+    color:#2563eb;
+}
+
+/* Score Card */
+
+.score-card{
+    background:#fff;
+    padding:25px;
+    border-radius:12px;
+    text-align:center;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.score-card:hover{
+    transform:translateY(-6px);
+}
+
+.score-card h3{
+    color:#1e293b;
+}
+
+.score-card h1{
+    margin-top:15px;
+    font-size:42px;
+    color:#2563eb;
+}/* ==========================================
+   Business Intelligence Dashboard
+   style.css - Part 2
+   Table + Form + Filter + Charts
+========================================== */
+
+
+/* ==========================
+   Form
+========================== */
+
+.form{
+    margin-top:30px;
+    background:#fff;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+}
+
+.form h2{
+    margin-bottom:15px;
+    color:#1e293b;
+}
+
+.form input,
+.form select,
+.form textarea{
+
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+
+    border:1px solid #ccc;
+    border-radius:8px;
+
+    outline:none;
 
 }
-.charts{  
-  
-margin-top:30px;  
-  
-background:white;  
-  
-padding:20px;  
-  
-border-radius:12px;  
-  
-}  
-  
-.chartBox{  
-  
-height:450px;  
-  
-}  
-.filter-box{  
-  
-background:white;  
-  
-padding:20px;  
-  
-margin-top:20px;  
-  
-border-radius:12px;  
-  
-}  
-  
-  
-.filter-box input,  
-.filter-box select{  
-  
-padding:10px;  
-  
-margin:5px;  
-  
-}  
-  
-  
-.kpi{  
-  
-display:grid;  
-  
-grid-template-columns:  
-repeat(auto-fit,minmax(200px,1fr));  
-  
-gap:15px;  
-  
-margin-top:20px;  
-  
-}  
-.market-module{  
-  
-margin-top:30px;  
-  
-display:grid;  
-  
-grid-template-columns:  
-repeat(auto-fit,minmax(250px,1fr));  
-  
-gap:15px;  
-  
-}  
-  
-  
-  
-.research-card{  
-  
-background:white;  
-  
-padding:20px;  
-  
-border-radius:12px;  
-  
-box-shadow:0 2px 8px rgba(0,0,0,.1);  
-  
-}  
-  
-  
-.research-card h3{  
-  
-margin-bottom:15px;  
-  
-}  
-.score-module{  
-  
-margin-top:30px;  
-  
-display:grid;  
-  
-grid-template-columns:  
-repeat(auto-fit,minmax(220px,1fr));  
-  
-gap:15px;  
-  
-}  
-  
-  
-  
-.score-card{  
-  
-background:white;  
-  
-padding:25px;  
-  
-border-radius:12px;  
-  
-text-align:center;  
-  
-box-shadow:0 2px 8px rgba(0,0,0,.1);  
-  
-}  
-  
-  
-.score-card h1{  
-  
-font-size:40px;  
-  
-margin-top:15px;  
-  
-}  
+
+.form input:focus,
+.form select:focus,
+.form textarea:focus{
+
+    border-color:#2563eb;
+
+}
+
+.form button{
+
+    background:#2563eb;
+
+    color:#fff;
+
+    border:none;
+
+    padding:12px 25px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.form button:hover{
+
+    background:#1d4ed8;
+
+}
+
+
+
+/* ==========================
+   Search & Filter
+========================== */
+
+.filter-box{
+
+    margin-top:30px;
+
+    background:#fff;
+
+    padding:20px;
+
+    border-radius:12px;
+
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+
+}
+
+.filter-box h2{
+
+    margin-bottom:15px;
+
+}
+
+.filter-box input,
+.filter-box select{
+
+    padding:12px;
+
+    margin:8px;
+
+    border:1px solid #ccc;
+
+    border-radius:8px;
+
+    outline:none;
+
+}
+
+.filter-box input{
+
+    width:260px;
+
+}
+
+
+
+/* ==========================
+   Table
+========================== */
+
+.table{
+
+    margin-top:30px;
+
+    background:#fff;
+
+    padding:20px;
+
+    border-radius:12px;
+
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+
+    overflow-x:auto;
+
+}
+
+.table h2{
+
+    margin-bottom:15px;
+
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+table th{
+
+    background:#2563eb;
+
+    color:white;
+
+    padding:14px;
+
+    text-align:left;
+
+}
+
+table td{
+
+    padding:12px;
+
+    border-bottom:1px solid #ddd;
+
+}
+
+table tr:hover{
+
+    background:#f4f8ff;
+
+}
+
+
+
+/* ==========================
+   Chart
+========================== */
+
+.charts{
+
+    margin-top:30px;
+
+    background:#fff;
+
+    padding:20px;
+
+    border-radius:12px;
+
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+
+}
+
+.charts h2{
+
+    margin-bottom:20px;
+
+}
+
+.chartBox{
+
+    position:relative;
+
+    width:100%;
+
+    height:450px;
+
+}
+
+
+
+/* ==========================
+   Canvas
+========================== */
+
+canvas{
+
+    max-width:100%;
+
+}/* ==========================================
+   Business Intelligence Dashboard
+   style.css - Part 3
+   Market Module + Score + Responsive
+========================================== */
+
+
+/* ==========================
+   Market Research Module
+========================== */
+
+.market-module{
+
+    margin-top:30px;
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+
+    gap:20px;
+
+}
+
+
+.research-card{
+
+    background:#fff;
+
+    padding:20px;
+
+    border-radius:12px;
+
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+
+    transition:.3s;
+
+}
+
+
+.research-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:0 8px 18px rgba(0,0,0,.15);
+
+}
+
+
+.research-card h3{
+
+    margin-bottom:15px;
+
+    color:#1e293b;
+
+}
+
+
+.research-card p{
+
+    color:#2563eb;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+}
+
+
+
+/* ==========================
+   Score Module
+========================== */
+
+.score-module{
+
+    margin-top:30px;
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:20px;
+
+}
+
+
+
+/* ==========================
+   Smooth Animation
+========================== */
+
+.card,
+.score-card,
+.research-card,
+.table,
+.form,
+.filter-box,
+.charts{
+
+    animation:fadeUp .5s ease;
+
+}
+
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+
+/* ==========================
+   Scrollbar
+========================== */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#e5e7eb;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#64748b;
+
+    border-radius:10px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#2563eb;
+
+}
+
+
+
+/* ==========================
+   Footer
+========================== */
+
+footer{
+
+    margin-top:40px;
+
+    text-align:center;
+
+    color:#666;
+
+    font-size:14px;
+
+}
+
+
+
+/* ==========================
+   Responsive
+========================== */
+
 @media(max-width:768px){
 
 body{
-display:block;
+
+    display:block;
+
 }
 
 
 .sidebar{
 
-width:250px;
+    width:100%;
 
-background:#1e293b;
+    min-height:auto;
 
-color:white;
-
-min-height:100vh;
-
-padding:20px;
-
-position:sticky;
-
-top:0;
+    position:relative;
 
 }
 
+
 .main{
 
-padding:10px;
+    width:100%;
+
+    padding:15px;
 
 }
 
 
 header{
 
-display:block;
+    flex-direction:column;
+
+    align-items:flex-start;
 
 }
 
 
 header input{
 
-width:100%;
-
-margin-top:10px;
+    width:100%;
 
 }
 
@@ -301,9 +608,25 @@ margin-top:10px;
 .market-module,
 .score-module{
 
-grid-template-columns:1fr;
+    grid-template-columns:1fr;
 
 }
 
+
+.filter-box input,
+.filter-box select{
+
+    width:100%;
+
+    margin:8px 0;
+
+}
+
+
+.chartBox{
+
+    height:300px;
+
+}
 
 }
