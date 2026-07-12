@@ -46,7 +46,46 @@
 <input type="text" placeholder="Search...">
 
 </header>
+<section class="kpi">
 
+
+<div class="card">
+
+<h3>Total Data</h3>
+
+<p id="totalData">0</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>Active Business</h3>
+
+<p id="activeData">0</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>Risk Level</h3>
+
+<p id="riskData">0</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>Business Score</h3>
+
+<p id="businessScore">0%</p>
+
+</div>
+
+
+</section>
 <section class="cards">
 
 <div class="card">
@@ -114,7 +153,51 @@
 
 </section>
 <section class="table">
+<section class="filter-box">
 
+<h2>Business Data Search</h2>
+
+
+<input 
+type="text" 
+id="searchInput"
+placeholder="Search Business Data..."
+onkeyup="filterData()">
+
+
+<select id="categoryFilter" onchange="filterData()">
+
+<option value="">All Category</option>
+
+<option value="Market">Market</option>
+
+<option value="Customer">Customer</option>
+
+<option value="Competitor">Competitor</option>
+
+<option value="Finance">Finance</option>
+
+<option value="Economy">Economy</option>
+
+<option value="Security">Security</option>
+
+</select>
+
+
+<select id="statusFilter" onchange="filterData()">
+
+<option value="">All Status</option>
+
+<option value="Active">Active</option>
+
+<option value="Pending">Pending</option>
+
+<option value="Risk">Risk</option>
+
+</select>
+
+
+</section>
 <h2>Latest Business Information</h2>
 
 <table>
