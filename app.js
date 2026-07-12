@@ -1,94 +1,152 @@
+// ===============================
+// Business Intelligence Dashboard
+// app.js
+// ===============================
+
+// သင့် SheetDB API
 const API_URL = "https://sheetdb.io/api/v1/6zk630pgtw0p4";
 
-async function loadData(){
 
-const response = await fetch(API_URL);
+// ===============================
+// Load Data From Google Sheets
+// ===============================
+async function loadData() {
 
-const data = await response.json();
+    try {
 
-const table = document.querySelector("table");
+        const response = await fetch(API_URL);
 
-table.innerHTML=`
+        if (!response.ok) {
+            throw new Error("Cannot connect to SheetDB");
+        }
 
-<tr>
+        const data = await response.json();
 
-<th>Category</th>
+        const table = document.querySelector("table");
 
-<th>Title</th>
+        table.innerHTML = `
+        <tr>
+            <th>Category</th>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Updated</th>
+        </tr>
+        `;
 
-<th>Status</th>
+        data.forEach(item => {
 
-<th>Updated</th>
+            table.innerHTML += `
+            <tr>
+                <td>${item.Category || ""}</td>
+                <td>${item.Title || ""}</td>
+                <td>${item.Status || ""}</td>
+                <td>${item.Updated || ""}</td>
+            </tr>
+            `;
 
-</tr>
+        });
 
-`;
+    } catch (error) {
 
-data.forEach(item=>{
+        console.error(error);
 
-table.innerHTML+=`
+        alert("❌ Unable to load data.");
 
-<tr>
-
-<td>${item.Category}</td>
-
-<td>${item.Title}</td>
-
-<td>${item.Status}</td>
-
-<td>${item.Updated}</td>
-
-</tr>
-
-`;
-
-});
+    }
 
 }
 
+
+
+// ===============================
+// Save Data To Google Sheets
+// ===============================
+async function saveData() {
+
+    const category = document.getElementById("category").value.trim();
+    const title = document.getElementById("title").value.trim();
+    const description = document.getElementById("description").value.trim();
+    const status = document.getElementById("status").value.trim();
+
+    if (
+        category === "" ||
+        title === "" ||
+        description === "" ||
+        status === ""
+    ) {
+
+        alert("Please fill all fields.");
+
+        return;
+
+    }
+
+    try {
+
+        const response = await fetch(API_URL, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+
+                data: {
+
+                    Category: category,
+
+                    Title: title,
+
+                    Description: description,
+
+                    Status: status,
+
+                    Updated: new Date().toLocaleString()
+
+                }
+
+            })
+
+        });
+
+        if (!response.ok) {
+
+            throw new Error("Save Failed");
+
+        }
+
+        alert("✅ Saved Successfully");
+
+        // Clear Inputs
+        document.getElementById("category").value = "";
+        document.getElementById("title").value = "";
+        document.getElementById("description").value = "";
+        document.getElementById("status").value = "";
+
+        // Reload Table
+        loadData();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("❌ Save Failed");
+
+    }
+
+}
+
+
+
+// ===============================
+// Auto Refresh Every 10 Seconds
+// ===============================
+setInterval(loadData, 10000);
+
+
+// ===============================
+// First Load
+// ===============================
 loadData();
-async function saveData(){
-
-const category=document.getElementById("category").value;
-
-const title=document.getElementById("title").value;
-
-const description=document.getElementById("description").value;
-
-const status=document.getElementById("status").value;
-
-await fetch(API_URL,{
-
-method:"POST",
-
-headers:{
-
-"Content-Type":"application/json"
-
-},
-
-body:JSON.stringify({
-
-data:{
-
-Category:category,
-
-Title:title,
-
-Description:description,
-
-Status:status,
-
-Updated:new Date().toLocaleDateString()
-
-}
-
-})
-
-});
-
-alert("Saved Successfully");
-
-loadData();
-
-}
