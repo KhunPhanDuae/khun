@@ -207,3 +207,40 @@ box-shadow:0 2px 8px rgba(0,0,0,.1);
 margin-bottom:15px;
 
 }
+.score-module{
+
+margin-top:30px;
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(220px,1fr));
+
+gap:15px;
+
+}
+
+
+
+.score-card{
+
+background:white;
+
+padding:25px;
+
+border-radius:12px;
+
+text-align:center;
+
+box-shadow:0 2px 8px rgba(0,0,0,.1);
+
+}
+
+
+.score-card h1{
+
+font-size:40px;
+
+margin-top:15px;
+
+}
