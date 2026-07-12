@@ -1,335 +1,753 @@
 <!DOCTYPE html>
 <html lang="my">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Business Intelligence Dashboard</title>
 
-    <link rel="stylesheet" href="style.css">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>
+Business Intelligence Dashboard
+</title>
+
+
+<link rel="stylesheet" href="style.css">
+
+
 </head>
+
+
 <body>
+
+
+<!-- Sidebar -->
 
 <div class="sidebar">
 
-    <h2>BI Dashboard</h2>
 
-    <ul>
+<h2>
+BI Dashboard
+</h2>
 
-        <li>🏠 Dashboard</li>
 
-        <li>📈 Market Research</li>
+<ul>
 
-        <li>👥 Customer Demand</li>
+<li>🏠 Dashboard</li>
 
-        <li>🏢 Competitors</li>
+<li>📈 Market Research</li>
 
-        <li>💰 Finance</li>
+<li>👥 Customer Demand</li>
 
-        <li>⚠ Risk</li>
+<li>🏢 Competitors</li>
 
-        <li>🌍 Economy</li>
+<li>💰 Finance</li>
 
-        <li>🔐 Security</li>
+<li>⚠ Risk</li>
 
-        <li>⚙ Settings</li>
+<li>🌍 Economy</li>
 
-    </ul>
+<li>🔐 Security</li>
+
+<li>⚙ Settings</li>
+
+
+</ul>
+
 
 </div>
+
+
+
+
+
+<!-- Main Content -->
+
+<div class="main">
+
+
+
+<header>
+
+
+<h1>
+Business Intelligence & Market Research
+</h1>
+
+
+
+<input
+
+id="searchInput"
+
+type="text"
+
+placeholder="Search Business Data..."
+
+onkeyup="filterData()"
+
+
+>
+
+
+</header>
+
+
+
+
+
+<!-- KPI Section -->
+
+
+<section class="kpi">
+
+
+
+<div class="card">
+
+<h3>
+Total Data
+</h3>
+
+<p id="totalData">
+0
+</p>
+
+
+</div>
+
+
+
+
+<div class="card">
+
+
+<h3>
+Active Business
+</h3>
+
+
+<p id="activeData">
+0
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+Risk Level
+</h3>
+
+
+<p id="riskData">
+0
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="card">
+
+
+<h3>
+Business Score
+</h3>
+
+
+<p id="businessScore">
+0%
+</p>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+<!-- Business Category Cards -->
+
+
+<section class="cards">
+
+
+
+<div class="card">
+
+<h3>
+Market Demand
+</h3>
+
+
+<p id="marketCount">
+0
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="card">
+
+<h3>
+Customer Behavior
+</h3>
+
+
+<p id="customerCount">
+0
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="card">
+
+<h3>
+Competitors
+</h3>
+
+
+<p id="competitorCount">
+0
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="card">
+
+<h3>
+Financial Health
+</h3>
+
+
+<p id="financeCount">
+0
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="card">
+
+<h3>
+Macro Economy
+</h3>
+
+
+<p id="economyCount">
+0
+</p>
+
+
+</div>
+
+
+
+
+
+<div class="card">
+
+<h3>
+Cyber Security
+</h3>
+
+
+<p id="securityCount">
+0
+</p>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- Market Research Intelligence -->
+
+
 <section class="market-module">
 
-<h2>Market Research Intelligence</h2>
+
+<h2>
+Market Research Intelligence
+</h2>
+
+
 
 
 <div class="research-card">
 
-<h3>📍 Location Intelligence</h3>
+
+<h3>
+📍 Location Intelligence
+</h3>
+
 
 <p id="locationData">
 Loading...
 </p>
 
+
 </div>
+
+
 
 
 
 <div class="research-card">
 
-<h3>⏰ Trend & Seasonality</h3>
+
+<h3>
+⏰ Trend & Seasonality
+</h3>
+
 
 <p id="trendData">
 Loading...
 </p>
 
+
 </div>
+
+
 
 
 
 <div class="research-card">
 
-<h3>👥 Customer Behavior</h3>
+
+<h3>
+👥 Customer Behavior
+</h3>
+
 
 <p id="customerData">
 Loading...
 </p>
 
+
 </div>
+
+
 
 
 
 <div class="research-card">
 
-<h3>🏢 Competitor Intelligence</h3>
+
+<h3>
+🏢 Competitor Intelligence
+</h3>
+
 
 <p id="competitorData">
 Loading...
 </p>
 
+
 </div>
+
+
 
 
 
 <div class="research-card">
 
-<h3>⚠ Risk Analysis</h3>
+
+<h3>
+⚠ Risk Analysis
+</h3>
+
 
 <p id="riskAnalysis">
 Loading...
 </p>
 
+
 </div>
+
 
 
 </section>
-<div class="main">
+<!-- Add Business Information Form -->
 
-<header>
-
-<h1>Business Intelligence & Market Research</h1>
-
-<input type="text" placeholder="Search...">
-
-</header>
-<section class="kpi">
-
-
-<div class="card">
-
-<h3>Total Data</h3>
-
-<p id="totalData">0</p>
-
-</div>
-
-
-<div class="card">
-
-<h3>Active Business</h3>
-
-<p id="activeData">0</p>
-
-</div>
-
-
-<div class="card">
-
-<h3>Risk Level</h3>
-
-<p id="riskData">0</p>
-
-</div>
-
-
-<div class="card">
-
-<h3>Business Score</h3>
-
-<p id="businessScore">0%</p>
-
-</div>
-
-
-</section>
-<section class="cards">
-
-<div class="card">
-
-<h3>Market Demand</h3>
-
-<p id="marketCount">Waiting Data...</p>
-
-</div>
-
-<div class="card">
-
-<h3>Customer Behavior</h3>
-
-<p id="customerCount">Waiting Data...</p>
-
-</div>
-
-<div class="card">
-
-<h3>Competitors</h3>
-
-<p id="competitorCount">Waiting Data...</p>
-
-</div>
-
-<div class="card">
-
-<h3>Financial Health</h3>
-
-<p id="financeCount">Waiting Data...</p>
-
-</div>
-
-<div class="card">
-
-<h3>Macro Economy</h3>
-
-<p id="economyCount">Waiting Data...</p>
-
-</div>
-
-<div class="card">
-
-<h3>Cyber Security</h3>
-
-<p id="securityCount">Waiting Data...</p>
-
-</div>
-
-</section>
 <section class="form">
 
-<h2>Add Business Information</h2>
 
-<input id="category" placeholder="Category">
-
-<input id="title" placeholder="Title">
-
-<input id="description" placeholder="Description">
-
-<input id="status" placeholder="Status">
-
-<button onclick="saveData()">Save</button>
-
-</section>
-<section class="table">
-<section class="filter-box">
-
-<h2>Business Data Search</h2>
+<h2>
+Add Business Information
+</h2>
 
 
 <input 
-type="text" 
-id="searchInput"
-placeholder="Search Business Data..."
-onkeyup="filterData()">
+id="category"
+placeholder="Category (Market, Customer, Finance...)"
+>
+
+
+<input 
+id="title"
+placeholder="Title"
+>
+
+
+<input 
+id="description"
+placeholder="Description"
+>
+
+
+<input 
+id="status"
+placeholder="Status (Active, Pending, Risk)"
+>
+
+
+
+<button onclick="saveBusinessData()">
+Save
+</button>
+
+
+
+</section>
+
+
+
+
+
+
+
+<!-- Search & Filter -->
+
+
+<section class="filter-box">
+
+
+<h2>
+Business Data Search
+</h2>
+
 
 
 <select id="categoryFilter" onchange="filterData()">
 
-<option value="">All Category</option>
 
-<option value="Market">Market</option>
+<option value="">
+All Category
+</option>
 
-<option value="Customer">Customer</option>
 
-<option value="Competitor">Competitor</option>
+<option value="Market">
+Market
+</option>
 
-<option value="Finance">Finance</option>
 
-<option value="Economy">Economy</option>
+<option value="Customer">
+Customer
+</option>
 
-<option value="Security">Security</option>
+
+<option value="Competitor">
+Competitor
+</option>
+
+
+<option value="Finance">
+Finance
+</option>
+
+
+<option value="Economy">
+Economy
+</option>
+
+
+<option value="Security">
+Security
+</option>
+
 
 </select>
+
+
+
 
 
 <select id="statusFilter" onchange="filterData()">
 
-<option value="">All Status</option>
 
-<option value="Active">Active</option>
 
-<option value="Pending">Pending</option>
+<option value="">
+All Status
+</option>
 
-<option value="Risk">Risk</option>
+
+<option value="Active">
+Active
+</option>
+
+
+<option value="Pending">
+Pending
+</option>
+
+
+<option value="Risk">
+Risk
+</option>
+
+
 
 </select>
 
 
+
 </section>
-<h2>Latest Business Information</h2>
+
+
+
+
+
+
+
+
+
+<!-- Business Data Table -->
+
+
+<section class="table">
+
+
+<h2>
+Latest Business Information
+</h2>
+
+
 
 <table>
 
-<tr>
-
-<th>Category</th>
-
-<th>Status</th>
-
-<th>Updated</th>
-
-</tr>
 
 <tr>
 
-<td>Market</td>
+<th>
+Category
+</th>
 
-<td>Pending</td>
 
-<td>--</td>
+<th>
+Title
+</th>
 
-</tr>
 
-<tr>
+<th>
+Status
+</th>
 
-<td>Finance</td>
 
-<td>Pending</td>
+<th>
+Updated
+</th>
 
-<td>--</td>
-
-</tr>
-
-<tr>
-
-<td>Competitor</td>
-
-<td>Pending</td>
-
-<td>--</td>
 
 </tr>
+
+
 
 </table>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+<!-- Business Analytics Chart -->
+
+
 <section class="charts">
 
-<h2>Business Analytics</h2>
+
+<h2>
+Business Analytics
+</h2>
+
+
 
 <div class="chartBox">
 
+
 <canvas id="businessChart"></canvas>
 
-</div>
 
-</section>
-</section>
 
 </div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- Market Score Module -->
+
+
+<section class="score-module">
+
+
+<h2>
+Market Intelligence Score
+</h2>
+
+
+
+
+<div class="score-card">
+
+
+<h3>
+Opportunity Score
+</h3>
+
+
+<h1 id="opportunityScore">
+0%
+</h1>
+
+
+</div>
+
+
+
+
+
+<div class="score-card">
+
+
+<h3>
+Demand Level
+</h3>
+
+
+<h1 id="demandScore">
+0
+</h1>
+
+
+</div>
+
+
+
+
+
+<div class="score-card">
+
+
+<h3>
+Risk Level
+</h3>
+
+
+<h1 id="riskScore">
+0
+</h1>
+
+
+</div>
+
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<!-- JavaScript Files -->
+
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
 
 <script src="js/config.js"></script>
 
+
 <script src="js/sheetdb.js"></script>
+
 
 <script src="js/chart.js"></script>
 
+
 <script src="js/dashboard.js"></script>
-    <script src="js/market.js"></script>
+
+
+<script src="js/market.js"></script>
+
+
+<script src="js/marketScore.js"></script>
+
+
+
 </body>
+
 </html>
