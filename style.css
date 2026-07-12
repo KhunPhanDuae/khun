@@ -139,3 +139,38 @@ border-radius:12px;
 height:450px;
 
 }
+.filter-box{
+
+background:white;
+
+padding:20px;
+
+margin-top:20px;
+
+border-radius:12px;
+
+}
+
+
+.filter-box input,
+.filter-box select{
+
+padding:10px;
+
+margin:5px;
+
+}
+
+
+.kpi{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(200px,1fr));
+
+gap:15px;
+
+margin-top:20px;
+
+}
