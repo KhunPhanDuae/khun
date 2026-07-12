@@ -122,3 +122,20 @@ border-radius:8px;
 cursor:pointer;
 
 }
+.charts{
+
+margin-top:30px;
+
+background:white;
+
+padding:20px;
+
+border-radius:12px;
+
+}
+
+.chartBox{
+
+height:450px;
+
+}
