@@ -1,911 +1,653 @@
+
 <!DOCTYPE html>
 <html lang="my">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BI & Market Research Dashboard</title>
-    <!-- Google Fonts & FontAwesome Icons -->
+    <!-- Tailwind CSS for modern aesthetic styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome for professional icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for premium look -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Chart.js CDN for interactive visualizations -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Arial', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        /* Modern Theme Setup (Slate & Emerald Palette) */
-        :root {
-            --bg-color: #f8fafc;
-            --primary-dark: #0f172a;
-            --secondary-dark: #1e293b;
-            --accent-teal: #10b981;
-            --accent-blue: #0ea5e9;
-            --text-dark: #334155;
-            --text-light: #64748b;
-            --card-bg: #ffffff;
-            --border-color: #e2e8f0;
+        /* Custom scrollbar for modern scroll areas */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
         }
-
-        body {
-            font-family: 'Plus Jakarta Sans', 'Arial', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-dark);
-            padding: 20px;
-            line-height: 1.5;
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
         }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        /* Header Area Styling */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
-            padding: 24px 32px;
-            border-radius: 16px;
-            color: white;
-            margin-bottom: 24px;
-            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15);
-        }
-
-        header h1 {
-            font-family: 'Comfortaa', cursive;
-            font-size: 28px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        header p {
-            color: #94a3b8;
-            font-size: 14px;
-            margin-top: 4px;
-        }
-
-        .sync-badge {
-            background-color: rgba(16, 185, 129, 0.2);
-            border: 1px solid var(--accent-teal);
-            color: #34d399;
-            padding: 6px 12px;
-            border-radius: 50px;
-            font-size: 12px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .sync-badge i {
-            animation: spin 3s linear infinite;
-        }
-
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
-        }
-
-        /* KPI Cards Grid */
-        .kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-            margin-bottom: 24px;
-        }
-
-        .kpi-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s;
-        }
-
-        .kpi-card:hover {
-            transform: translateY(-4px);
-        }
-
-        .kpi-card-content h3 {
-            color: var(--text-light);
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 6px;
-        }
-
-        .kpi-card-content p {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary-dark);
-        }
-
-        .kpi-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-
-        .kpi-icon.blue { background-color: rgba(14, 165, 233, 0.1); color: var(--accent-blue); }
-        .kpi-icon.teal { background-color: rgba(16, 185, 129, 0.1); color: var(--accent-teal); }
-        .kpi-icon.purple { background-color: rgba(168, 85, 247, 0.1); color: #a855f7; }
-        .kpi-icon.orange { background-color: rgba(249, 115, 22, 0.1); color: #f97316; }
-
-        /* Visualization Charts Grid */
-        .charts-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 24px;
-            margin-bottom: 24px;
-        }
-
-        @media (max-width: 1024px) {
-            .charts-grid { grid-template-columns: 1fr; }
-        }
-
-        .chart-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 24px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            display: flex;
-            flex-direction: column;
-            min-height: 380px;
-        }
-
-        .chart-card h2 {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--primary-dark);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .chart-wrapper {
-            position: relative;
-            flex-grow: 1;
-            width: 100%;
-            height: 100%;
-            max-height: 300px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* Two Column Input/Information Block */
-        .interactive-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 24px;
-        }
-
-        @media (max-width: 900px) {
-            .interactive-grid { grid-template-columns: 1fr; }
-        }
-
-        .form-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 28px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-
-        .form-card h2 {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--primary-dark);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-light);
-            margin-bottom: 6px;
-        }
-
-        .form-group select, .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            background-color: #f8fafc;
-            color: var(--text-dark);
-            font-family: inherit;
-            font-size: 14px;
-            transition: all 0.2s;
-        }
-
-        .form-group select:focus, .form-group input:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: var(--accent-blue);
-            background-color: #fff;
-            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
-        }
-
-        .btn {
-            background-color: var(--accent-teal);
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.2s;
-            width: 100%;
-        }
-
-        .btn:hover {
-            opacity: 0.95;
-            transform: translateY(-1px);
-        }
-
-        /* Guideline / Helpful Stream */
-        .info-card {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            border-radius: 16px;
-            padding: 28px;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .info-card h2 {
-            font-size: 18px;
-            font-weight: 600;
-            color: #f1f5f9;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .info-list {
-            list-style: none;
-        }
-
-        .info-list li {
-            position: relative;
-            padding-left: 28px;
-            margin-bottom: 14px;
-            font-size: 14px;
-            color: #cbd5e1;
-            line-height: 1.6;
-        }
-
-        .info-list li i {
-            position: absolute;
-            left: 0;
-            top: 4px;
-            color: var(--accent-teal);
-        }
-
-        .info-list li strong {
-            color: white;
-        }
-
-        /* Data Explorer / Table Section */
-        .table-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 24px;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-
-        .table-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .table-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--primary-dark);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* Dynamic Search and Filtering Row */
-        .table-controls {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .filter-select, .search-input {
-            padding: 8px 16px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            background-color: #f8fafc;
-            font-size: 13px;
-            font-family: inherit;
-        }
-
-        .filter-select:focus, .search-input:focus {
-            outline: none;
-            border-color: var(--accent-blue);
-        }
-
-        .btn-refresh {
-            background-color: #f1f5f9;
-            color: var(--text-dark);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 8px 16px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: background 0.2s;
-        }
-
-        .btn-refresh:hover {
-            background-color: #e2e8f0;
-        }
-
-        .table-responsive {
-            overflow-x: auto;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            font-size: 14px;
-        }
-
-        th {
-            background-color: #f8fafc;
-            color: var(--text-light);
-            padding: 16px;
-            font-weight: 600;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        td {
-            padding: 16px;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--text-dark);
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        tr:hover td {
-            background-color: #f8fafc;
-        }
-
-        .badge-cat {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-            background-color: #e0f2fe;
-            color: #0369a1;
-        }
-
-        .badge-tools {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 600;
-            background-color: #f1f5f9;
-            color: var(--text-light);
-            border: 1px solid var(--border-color);
-        }
-
-        /* Loader & Blank States */
-        .loader-wrapper {
-            padding: 60px;
-            text-align: center;
-            color: var(--text-light);
-        }
-
-        .loader-wrapper i {
-            font-size: 32px;
-            color: var(--accent-blue);
-            animation: spin 1s linear infinite;
-            margin-bottom: 12px;
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
     </style>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-800 min-h-screen font-sans">
 
-<div class="container">
-    
-    <!-- Real-time Dashboard Header -->
-    <header>
-        <div>
-            <h1><i class="fa-solid fa-chart-line"></i> BI & Market Research System</h1>
-            <p>အချိန်နှင့်တပြေးညီ အချက်အလက်ဖလှယ်စောင့်ကြည့်နိုင်သော တိုက်ရိုက်လုပ်ငန်းခွင် Dashboard</p>
-        </div>
-        <div class="sync-badge">
-            <i class="fa-solid fa-arrows-rotate"></i> Real-time Sync Active
-        </div>
-    </header>
-
-    <!-- Top KPI Cards Section -->
-    <div class="kpi-grid">
-        <div class="kpi-card">
-            <div class="kpi-card-content">
-                <h3>စုစုပေါင်း မှတ်တမ်းများ (Total)</h3>
-                <p id="kpi-total">-</p>
-            </div>
-            <div class="kpi-icon blue"><i class="fa-solid fa-folder-open"></i></div>
-        </div>
-        <div class="kpi-card">
-            <div class="kpi-card-content">
-                <h3>ဦးစားပေး အဓိကကဏ္ဍ (Top Category)</h3>
-                <p id="kpi-category" style="font-size: 14px; margin-top: 5px;">-</p>
-            </div>
-            <div class="kpi-icon teal"><i class="fa-solid fa-star"></i></div>
-        </div>
-        <div class="kpi-card">
-            <div class="kpi-card-content">
-                <h3>နောက်ဆုံး အချက်အလက် (Latest Date)</h3>
-                <p id="kpi-latest" style="font-size: 16px; margin-top: 5px;">-</p>
-            </div>
-            <div class="kpi-icon purple"><i class="fa-solid fa-clock"></i></div>
-        </div>
-        <div class="kpi-card">
-            <div class="kpi-card-content">
-                <h3>အသုံးအများဆုံး ကိရိယာ (Top Tool)</h3>
-                <p id="kpi-tools" style="font-size: 16px; margin-top: 5px;">-</p>
-            </div>
-            <div class="kpi-icon orange"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-        </div>
-    </div>
-
-    <!-- Data Visualization Charts Block -->
-    <div class="charts-grid">
-        <!-- 1. Category Proportions (Doughnut Chart) -->
-        <div class="chart-card">
-            <h2><i class="fa-solid fa-chart-pie" style="color: var(--accent-blue);"></i> ကဏ္ဍအလိုက် အချက်အလက် အချိုးအစား</h2>
-            <div class="chart-wrapper">
-                <canvas id="categoryChart"></canvas>
-            </div>
-        </div>
-        <!-- 2. Tools Analysis (Horizontal Bar Chart) -->
-        <div class="chart-card">
-            <h2><i class="fa-solid fa-chart-bar" style="color: var(--accent-teal);"></i> အသုံးပြုသည့် နည်းပညာနှင့် ကိရိယာများ စာရင်း</h2>
-            <div class="chart-wrapper">
-                <canvas id="toolsChart"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <!-- Interactive Data Management Grid -->
-    <div class="interactive-grid">
-        <!-- Left Column: Form to Write Back to Google Sheets -->
-        <div class="form-card">
-            <h2><i class="fa-solid fa-pen-to-square" style="color: var(--accent-blue);"></i> အချက်အလက်အသစ် ရိုက်သွင်းရန်</h2>
-            <form id="biForm">
-                <div class="form-group">
-                    <label for="category">အချက်အလက် အမျိုးအစား (Category)</label>
-                    <select id="category" required>
-                        <option value="နေရာပြ အချက်အလက် (Market Location)">နေရာပြ အချက်အလက် (Market Location)</option>
-                        <option value="အချိန်အခါ အချက်အလက် (Trends)">အချိန်အခါ အချက်အလက် (Trends)</option>
-                        <option value="အန္တရာယ်နှင့် ပြိုင်ဘက် (Competitors)">အန္တရာယ်နှင့် ပြိုင်ဘက် (Competitors)</option>
-                        <option value="ဝယ်သူ၏ အမူအကျင့် (Consumer Behavior)">ဝယ်သူ၏ အမူအကျင့် (Consumer Behavior)</option>
-                        <option value="လုပ်ငန်းလမ်းညွှန် (Roadmap & KPI)">လုပ်ငန်းလမ်းညွှန် (Roadmap & KPI)</option>
-                        <option value="ငွေကြေးလုံခြုံမှုနှင့် အရောင်း (Sales BI)">ငွေကြေးလုံခြုံမှုနှင့် အရောင်း (Sales BI)</option>
-                        <option value="မူဝါဒနှင့် ဥပဒေ (Legal & Policy)">မူဝါဒနှင့် ဥပဒေ (Legal & Policy)</option>
-                        <option value="ဆိုက်ဘာလုံခြုံရေး (Data Security)">ဆိုက်ဘာလုံခြုံရေး (Data Security)</option>
-                    </select>
+    <!-- Top Navigation Bar -->
+    <nav class="bg-slate-900 text-white shadow-md border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-indigo-600 p-2 rounded-lg text-white">
+                        <i class="fa-solid fa-chart-line text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-lg font-bold tracking-tight">BI & Market Research Portal</span>
+                        <span class="hidden md:inline-block ml-2 text-xs bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-medium border border-emerald-500/30">
+                            <i class="fa-solid fa-circle text-[8px] mr-1 animate-pulse"></i> Real-time Active
+                        </span>
+                    </div>
                 </div>
-                
-                <div class="form-group">
-                    <label for="information">အသေးစိတ် အချက်အလက် (Information Log)</label>
-                    <textarea id="information" rows="3" placeholder="ဈေးကွက် သို့မဟုတ် လုပ်ငန်း၏ အချက်အလက်များကို ရေးသွင်းပါ..." required></textarea>
+                <div class="flex items-center space-x-4">
+                    <button onclick="fetchData()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white px-3 py-2 rounded-lg text-sm font-medium transition duration-150 flex items-center gap-2 border border-slate-700">
+                        <i id="refreshIcon" class="fa-solid fa-arrows-rotate"></i> Refresh
+                    </button>
                 </div>
-
-                <div class="form-group">
-                    <label for="tools">အသုံးပြုသည့် ကိရိယာ (Tools Used)</label>
-                    <input type="text" id="tools" placeholder="ဥပမာ - Google Trends, Tableau, Power BI" required>
-                </div>
-
-                <button type="submit" class="btn" id="submitBtn">
-                    <i class="fa-solid fa-cloud-arrow-up"></i> Google Sheet ထဲသို့ သိမ်းဆည်းမည်
-                </button>
-            </form>
-        </div>
-
-        <!-- Right Column: Business Intelligence & Market Research Quick Guideline -->
-        <div class="info-card">
-            <div>
-                <h2><i class="fa-solid fa-lightbulb" style="color: #facc15;"></i> စောင့်ကြည့်လေ့လာရေး ဗဟုသုတ</h2>
-                <ul class="info-list">
-                    <li><i class="fa-solid fa-circle-check"></i> <strong>ဝယ်ယူသူဦးတည်ရာ နေရာ (Location):</strong> ကိုယ့်ပစ္စည်းကို အွန်လိုင်း၊ အော့ဖ်လိုင်း မည်သည့်နေရာက လူတွေစိတ်အဝင်စားဆုံးလဲ?</li>
-                    <li><i class="fa-solid fa-circle-check"></i> <strong>ခေတ်ရေစီးကြောင်း (Seasonality):</strong> ရာသီအလိုက်၊ ပွဲတော်ရက် သို့မဟုတ် လစာရက်များအလိုက် ဝယ်လိုအား အပြောင်းအလဲ။</li>
-                    <li><i class="fa-solid fa-circle-check"></i> <strong>ပြိုင်ဘက်များ (Competitor Intelligence):</strong> ပြိုင်ဘက်များ၏ အားသာချက်/အားနည်းချက်များအား ကြိုတင်လေ့လာခြင်း။</li>
-                    <li><i class="fa-solid fa-circle-check"></i> <strong>ဘဏ္ဍာရေး ကျန်းမာမှု (Financial BI):</strong> လုပ်ငန်းလည်ပတ်ငွေ အကြွေးနှင့် အရှုံးပေါ်နိုင်ခြေကို တွက်ချက်ခြင်း။</li>
-                </ul>
-            </div>
-            <p style="font-size: 12px; color: #94a3b8; border-top: 1px solid #334155; padding-top: 12px;">
-                မုဆိုးတစ်ယောက် တောမထွက်ခင် တောအကြောင်းလေ့လာသကဲ့သို့ လုပ်ငန်းရှင်တစ်ဦးသည်လည်း ဈေးကွက်သုတေသနကို မဖြစ်မနေ သိရှိထားရမည်။
-            </p>
-        </div>
-    </div>
-
-    <!-- Data Explorer Table Card -->
-    <div class="table-card">
-        <div class="table-header">
-            <div class="table-title">
-                <i class="fa-solid fa-database" style="color: var(--accent-blue);"></i> စောင့်ကြည့်အချက်အလက် မှတ်တမ်းစာရင်း
-            </div>
-            <div class="table-controls">
-                <input type="text" id="searchInput" class="search-input" placeholder="ကိရိယာ သို့မဟုတ် ဒေတာရှာရန်..." oninput="filterData()">
-                <select id="categoryFilter" class="filter-select" onchange="filterData()">
-                    <option value="ALL">ကဏ္ဍအားလုံး ပြသရန်</option>
-                    <option value="Market Location">နေရာပြ အချက်အလက်</option>
-                    <option value="Trends">အချိန်အခါ အချက်အလက်</option>
-                    <option value="Competitors">အန္တရာယ်နှင့် ပြိုင်ဘက်</option>
-                    <option value="Consumer Behavior">ဝယ်သူ၏ အမူအကျင့်</option>
-                    <option value="Roadmap & KPI">လုပ်ငန်းလမ်းညွှန်</option>
-                    <option value="Sales BI">ငွေကြေးလုံခြုံမှုနှင့် အရောင်း</option>
-                    <option value="Legal & Policy">မူဝါဒနှင့် ဥပဒေ</option>
-                    <option value="Data Security">ဆိုက်ဘာလုံခြုံရေး</option>
-                </select>
-                <button onclick="fetchData()" class="btn-refresh">
-                    <i class="fa-solid fa-arrows-rotate"></i> Refresh
-                </button>
             </div>
         </div>
+    </nav>
 
-        <!-- Table Loading Animation -->
-        <div id="loader" class="loader-wrapper">
-            <i class="fa-solid fa-spinner"></i>
-            <p>Google Sheet ထံမှ ဒေတာများကို ရယူစောင့်ကြည့်နေပါသည်...</p>
-        </div>
-
-        <div class="table-responsive">
-            <table id="dataTable" style="display:none;">
-                <thead>
-                    <tr>
-                        <th style="width: 15%;">ရက်စွဲ (Date)</th>
-                        <th style="width: 25%;">အမျိုးအစား (Category)</th>
-                        <th style="width: 40%;">အသေးစိတ် အချက်အလက် (Information Log)</th>
-                        <th style="width: 20%;">အသုံးပြုသည့် ကိရိယာ (Tools)</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                    <!-- Real-time data will stream here -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-</div>
-
-<script>
-    // SheetDB API integration URL
-    const API_URL = "https://sheetdb.io/api/v1/e7fhcqei9sorn";
-    let rawDashboardData = []; // To store global data list
-    
-    // Globally defined Chart instances to destroy and redraw
-    let categoryChartInstance = null;
-    let toolsChartInstance = null;
-
-    // Fetch live data from Google Sheets via SheetDB API
-    function fetchData() {
-        document.getElementById('loader').style.display = 'block';
-        document.getElementById('dataTable').style.display = 'none';
-
-        fetch(API_URL)
-            .then(response => response.json())
-            .then(data => {
-                if(Array.isArray(data)) {
-                    rawDashboardData = data;
-                } else {
-                    rawDashboardData = [];
-                }
-                
-                // Refresh visualizations and render UI tables
-                renderUI();
-            })
-            .catch(error => {
-                console.error('Error fetching dashboard real-time metrics:', error);
-                document.getElementById('loader').innerHTML = `
-                    <p style="color:#ef4444;"><i class="fa-solid fa-triangle-exclamation"></i> စနစ်အတွင်း ဒေတာဆွဲယူမှု အမှားအယွင်း ဖြစ်ပေါ်နေပါသည်။ API သို့မဟုတ် Sheet Setup အား စစ်ဆေးပါ။</p>
-                `;
-            });
-    }
-
-    // Render the dashboard calculations, charts, and data tables
-    function renderUI() {
-        // 1. Process Metrics
-        const totalEntries = rawDashboardData.length;
-        document.getElementById('kpi-total').innerText = totalEntries;
-
-        let latestDate = "-";
-        let categoryCounts = {};
-        let toolsCounts = {};
-
-        rawDashboardData.forEach(item => {
-            // Pick latest date
-            if(item.Date) {
-                latestDate = item.Date; 
-            }
-            // Count categories
-            if(item.Category) {
-                let trimmedCat = cleanCategoryName(item.Category);
-                categoryCounts[trimmedCat] = (categoryCounts[trimmedCat] || 0) + 1;
-            }
-            // Count tools
-            if(item.Tools) {
-                let toolList = item.Tools.split(',').map(t => t.trim());
-                toolList.forEach(t => {
-                    if (t) toolsCounts[t] = (toolsCounts[t] || 0) + 1;
-                });
-            }
-        });
-
-        // Compute top elements
-        let topCategory = Object.keys(categoryCounts).reduce((a, b) => categoryCounts[a] > categoryCounts[b] ? a : b, "-");
-        let topTool = Object.keys(toolsCounts).reduce((a, b) => toolsCounts[a] > toolsCounts[b] ? a : b, "-");
-
-        document.getElementById('kpi-category').innerText = truncateString(topCategory, 25);
-        document.getElementById('kpi-latest').innerText = latestDate;
-        document.getElementById('kpi-tools').innerText = truncateString(topTool, 20);
-
-        // 2. Render Charts
-        renderCategoryChart(categoryCounts);
-        renderToolsChart(toolsCounts);
-
-        // 3. Render Data Table Rows
-        filterData();
-
-        document.getElementById('loader').style.display = 'none';
-        document.getElementById('dataTable').style.display = 'table';
-    }
-
-    // Dynamic Filter & Search Implementation
-    function filterData() {
-        const searchValue = document.getElementById('searchInput').value.toLowerCase();
-        const selectedFilter = document.getElementById('categoryFilter').value;
-        const tableBody = document.getElementById('tableBody');
-        tableBody.innerHTML = '';
-
-        // Render from newest to oldest
-        const filteredList = [...rawDashboardData].reverse().filter(item => {
-            const matchesSearch = (item.Information && item.Information.toLowerCase().includes(searchValue)) ||
-                                  (item.Tools && item.Tools.toLowerCase().includes(searchValue));
-            
-            let matchesCategory = true;
-            if (selectedFilter !== "ALL") {
-                matchesCategory = item.Category && item.Category.includes(selectedFilter);
-            }
-
-            return matchesSearch && matchesCategory;
-        });
-
-        if(filteredList.length === 0) {
-            tableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-light);">ကိုက်ညီသော မှတ်တမ်းမရှိပါ။</td></tr>`;
-            return;
-        }
-
-        filteredList.forEach(row => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td><i class="fa-regular fa-calendar" style="color:var(--accent-blue); margin-right:5px;"></i> ${row.Date || '-'}</td>
-                <td><span class="badge-cat">${row.Category || '-'}</span></td>
-                <td style="font-weight:500; color:var(--primary-dark);">${row.Information || '-'}</td>
-                <td><span class="badge-tools"><i class="fa-solid fa-code-fork"></i> ${row.Tools || '-'}</span></td>
-            `;
-            tableBody.appendChild(tr);
-        });
-    }
-
-    // Chart 1: Doughnut Chart Rendering
-    function renderCategoryChart(categoryData) {
-        const ctx = document.getElementById('categoryChart').getContext('2d');
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         
-        // Destory previous instance if exists to avoid overlay bug
-        if (categoryChartInstance) {
-            categoryChartInstance.destroy();
-        }
+        <!-- Stats Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+            <!-- Card 1 -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-slate-500">စုစုပေါင်း အချက်အလက်</p>
+                    <h3 id="statTotal" class="text-3xl font-bold text-slate-900 mt-1">0</h3>
+                    <p class="text-xs text-indigo-600 mt-1"><i class="fa-solid fa-database mr-1"></i> Insights Recorded</p>
+                </div>
+                <div class="bg-indigo-50 p-4 rounded-xl text-indigo-600">
+                    <i class="fa-solid fa-folder-open text-2xl"></i>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-slate-500">အသုံးပြုသည့် ကိရိယာများ</p>
+                    <h3 id="statTools" class="text-3xl font-bold text-slate-900 mt-1 font-sans">0</h3>
+                    <p class="text-xs text-emerald-600 mt-1"><i class="fa-solid fa-screwdriver-wrench mr-1"></i> Unique Tools</p>
+                </div>
+                <div class="bg-emerald-50 p-4 rounded-xl text-emerald-600">
+                    <i class="fa-solid fa-toolbox text-2xl"></i>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-slate-500">အမျိုးအစား ကွဲပြားမှု</p>
+                    <h3 id="statCategories" class="text-3xl font-bold text-slate-900 mt-1">0</h3>
+                    <p class="text-xs text-amber-600 mt-1"><i class="fa-solid fa-tags mr-1"></i> Broad Domains</p>
+                </div>
+                <div class="bg-amber-50 p-4 rounded-xl text-amber-600">
+                    <i class="fa-solid fa-layer-group text-2xl"></i>
+                </div>
+            </div>
+            <!-- Card 4 -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-slate-500">နောက်ဆုံးပြင်ဆင်မှု</p>
+                    <h3 id="statLatest" class="text-lg font-bold text-slate-900 mt-2 truncate max-w-[180px]">-</h3>
+                    <p class="text-xs text-rose-600 mt-1"><i class="fa-solid fa-clock mr-1"></i> Latest Update</p>
+                </div>
+                <div class="bg-rose-50 p-4 rounded-xl text-rose-600">
+                    <i class="fa-solid fa-calendar-check text-2xl"></i>
+                </div>
+            </div>
+        </div>
 
-        const labels = Object.keys(categoryData);
-        const data = Object.values(categoryData);
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Doughnut Chart: Category Distribution -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 lg:col-span-1 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900"><i class="fa-solid fa-chart-pie text-indigo-600 mr-2"></i>အမျိုးအစားအလိုက် ခွဲခြမ်းစိတ်ဖြာမှု</h3>
+                    <p class="text-xs text-slate-500 mt-1">သုတေသနအမျိုးအစားအလိုက် ရရှိထားမှု ရာခိုင်နှုန်း</p>
+                </div>
+                <div class="relative py-4 flex justify-center items-center h-64">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+                <div class="text-center text-xs text-slate-400 border-t pt-3 border-slate-100">
+                    ဒေတာများကို Google Sheet မှ အချိန်နှင့်တပြေးညီ တွက်ချက်ထားပါသည်
+                </div>
+            </div>
 
-        if(labels.length === 0) {
-            labels.push("မှတ်တမ်းမရှိသေးပါ");
-            data.push(1);
-        }
+            <!-- Bar Chart: Top Tools Used -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 lg:col-span-1 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900"><i class="fa-solid fa-chart-bar text-emerald-600 mr-2"></i>အသုံးအများဆုံး Tools များ</h3>
+                    <p class="text-xs text-slate-500 mt-1">အချက်အလက်ရှာဖွေရာတွင် အသုံးပြုမှု အကြိမ်ရေအများဆုံး Tools များ</p>
+                </div>
+                <div class="relative py-4 flex justify-center items-center h-64 w-full">
+                    <canvas id="toolsChart"></canvas>
+                </div>
+                <div class="text-center text-xs text-slate-400 border-t pt-3 border-slate-100">
+                    Top Tools Utilization Count
+                </div>
+            </div>
 
-        categoryChartInstance = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: labels,
-                datasets: [{
-                    data: data,
-                    backgroundColor: [
-                        '#0ea5e9', '#10b981', '#a855f7', '#f97316', 
-                        '#f43f5e', '#eab308', '#6366f1', '#64748b'
-                    ],
-                    borderWidth: 2,
-                    borderColor: '#ffffff'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            font: { family: 'Plus Jakarta Sans', size: 11 },
-                            boxWidth: 12
-                        }
-                    }
-                },
-                cutout: '65%'
+            <!-- Line Chart: Data Entry Timeline -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 lg:col-span-1 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900"><i class="fa-solid fa-chart-line text-amber-600 mr-2"></i>ဒေတာ စုဆောင်းမှု Timeline</h3>
+                    <p class="text-xs text-slate-500 mt-1">ရက်စွဲအလိုက် အချက်အလက်များ တင်သွင်းမှုအခြေအနေ</p>
+                </div>
+                <div class="relative py-4 flex justify-center items-center h-64 w-full">
+                    <canvas id="timelineChart"></canvas>
+                </div>
+                <div class="text-center text-xs text-slate-400 border-t pt-3 border-slate-100">
+                    Data Collection Trajectory
+                </div>
+            </div>
+        </div>
+
+        <!-- Core Dashboard Workspace Split -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Left Side: Add Data Form (span 4) -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 lg:col-span-4 sticky top-24">
+                <div class="border-b border-slate-100 pb-4 mb-5">
+                    <h3 class="text-lg font-bold text-slate-900"><i class="fa-solid fa-plus-circle text-indigo-600 mr-2"></i>အချက်အလက်အသစ် ထည့်သွင်းရန်</h3>
+                    <p class="text-xs text-slate-500 mt-1">ဤနေရာမှ ဖြည့်စွက်လိုက်သော အချက်အလက်များသည် Google Sheet ထဲသို့ တိုက်ရိုက်ရောက်ရှိသွားပါမည်။</p>
+                </div>
+
+                <form id="biForm" class="space-y-4">
+                    <div>
+                        <label for="category" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">အချက်အလက် အမျိုးအစား (Category)</label>
+                        <select id="category" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition" required>
+                            <option value="နေရာပြ အချက်အလက် (Market Demand & Location)">နေရာပြ အချက်အလက် (Market Demand & Location)</option>
+                            <option value="အချိန်အခါ အချက်အလက် (Trends & Seasonality)">အချိန်အခါ အချက်အလက် (Trends & Seasonality)</option>
+                            <option value="အန္တရာယ်နှင့် ပြိုင်ဘက် (Risk & Competitor Intelligence)">အန္တရာယ်နှင့် ပြိုင်ဘက် (Risk & Competitor Intelligence)</option>
+                            <option value="ဝယ်သူ၏ အမူအကျင့် (Consumer Behavior)">ဝယ်သူ၏ အမူအကျင့် (Consumer Behavior)</option>
+                            <option value="လုပ်ငန်းလမ်းညွှန် (Roadmap & KPI)">လုပ်ငန်းလမ်းညွှန် (Roadmap & KPI)</option>
+                            <option value="ငွေကြေးလုံခြုံမှုနှင့် အရောင်း (Financial Health & Sales)">ငွေကြေးလုံခြုံမှုနှင့် အရောင်း (Financial Health & Sales)</option>
+                            <option value="မူဝါဒနှင့် ဥပဒေ (Policy, Legal & Compliance)">မူဝါဒနှင့် ဥပဒေ (Policy, Legal & Compliance)</option>
+                            <option value="ဆိုက်ဘာလုံခြုံရေး (Data Security)">ဆိုက်ဘာလုံခြုံရေး (Data Security)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="information" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">အသေးစိတ် အချက်အလက် (Information)</label>
+                        <textarea id="information" rows="4" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition placeholder-slate-400" placeholder="ဥပမာ - ဝယ်သူတွေက ပစ္စည်းတစ်ခုကို ဘာကြောင့် ဝယ်ကြတာလဲ..." required></textarea>
+                    </div>
+
+                    <div>
+                        <label for="tools" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">အသုံးပြုခဲ့သည့် ကိရိယာ (Tools Used)</label>
+                        <input type="text" id="tools" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition placeholder-slate-400" placeholder="ဥပမာ - Google Trends, Similarweb, Power BI" required>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg transition duration-150 flex items-center justify-center gap-2 shadow-sm shadow-indigo-200">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> မှတ်တမ်းတင်မည် (Save Data)
+                    </button>
+                </form>
+            </div>
+
+            <!-- Right Side: Data Grid & Search Filter (span 8) -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 lg:col-span-8 space-y-6">
+                
+                <!-- Filter bar & Status -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900"><i class="fa-solid fa-table-list text-slate-700 mr-2"></i>ဒေတာမှတ်တမ်းများ (Real-time Database)</h3>
+                        <p class="text-xs text-slate-500 mt-1">အချက်အလက်များကို ချက်ချင်း Filter ပြုလုပ်ရှာဖွေနိုင်ပါသည်</p>
+                    </div>
+                    <!-- Status Indicator -->
+                    <div id="loadingIndicator" class="flex items-center space-x-2 text-xs text-amber-500 font-medium bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-full">
+                        <i class="fa-solid fa-spinner animate-spin"></i>
+                        <span>Connecting to Google Sheet...</span>
+                    </div>
+                </div>
+
+                <!-- Live Search & Categorized Filter inputs -->
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                    <div class="sm:col-span-8 relative">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                            <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                        </span>
+                        <input type="text" id="searchInput" oninput="filterData()" class="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition" placeholder="အသေးစိတ်အချက် သို့မဟုတ် Tool အမည်ဖြင့် ရှာရန်...">
+                    </div>
+                    <div class="sm:col-span-4">
+                        <select id="filterCategory" onchange="filterData()" class="w-full px-3 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition">
+                            <option value="All">အမျိုးအစားအားလုံး (All)</option>
+                            <option value="နေရာပြ အချက်အလက် (Market Demand & Location)">နေရာပြ အချက်အလက်</option>
+                            <option value="အချိန်အခါ အချက်အလက် (Trends & Seasonality)">အချိန်အခါ အချက်အလက်</option>
+                            <option value="အန္တရာယ်နှင့် ပြိုင်ဘက် (Risk & Competitor Intelligence)">အန္တရာယ်နှင့် ပြိုင်ဘက်</option>
+                            <option value="ဝယ်သူ၏ အမူအကျင့် (Consumer Behavior)">ဝယ်သူ၏ အမူအကျင့်</option>
+                            <option value="လုပ်ငန်းလမ်းညွှန် (Roadmap & KPI)">လုပ်ငန်းလမ်းညွှန်</option>
+                            <option value="ငွေကြေးလုံခြုံမှုနှင့် အရောင်း (Financial Health & Sales)">ငွေကြေးလုံခြုံမှုနှင့် အရောင်း</option>
+                            <option value="မူဝါဒနှင့် ဥပဒေ (Policy, Legal & Compliance)">မူဝါဒနှင့် ဥပဒေ</option>
+                            <option value="ဆိုက်ဘာလုံခြုံရေး (Data Security)">ဆိုက်ဘာလုံခြုံရေး</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Data Table View -->
+                <div class="overflow-x-auto rounded-xl border border-slate-200">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-500 uppercase text-[10px] font-bold tracking-wider border-b border-slate-200">
+                                <th class="py-3 px-4 w-[15%]">ရက်စွဲ (Date)</th>
+                                <th class="py-3 px-4 w-[25%]">အမျိုးအစား (Category)</th>
+                                <th class="py-3 px-4 w-[45%]">အချက်အလက် (Information)</th>
+                                <th class="py-3 px-4 w-[15%]">ကိရိယာ (Tools)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody" class="divide-y divide-slate-100 text-sm">
+                            <!-- JS will inject rows here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Empty state fallback -->
+                <div id="emptyState" class="hidden text-center py-12 space-y-3">
+                    <div class="bg-slate-100 text-slate-400 p-4 rounded-full inline-block mx-auto">
+                        <i class="fa-solid fa-folder-open text-3xl"></i>
+                    </div>
+                    <p class="text-slate-500 text-sm font-medium">ရှာဖွေမှုနှင့် ကိုက်ညီသော ဒေတာမရှိပါ</p>
+                    <p class="text-xs text-slate-400">စာလုံးပေါင်းကို ပြန်လည်စစ်ဆေးပါ သို့မဟုတ် Filter ပြောင်းလဲကြည့်ပါ</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Operations for Real-time Dashboard Sync -->
+    <script>
+        const API_URL = "https://sheetdb.io/api/v1/6zk630pgtw0p4";
+        
+        // Static Mock Data fallback in case SheetDB runs out of requests or Google Sheet is completely empty
+        const MOCK_DATA = [
+            { Date: "2026/07/01", Category: "နေရာပြ အချက်အလက် (Market Demand & Location)", Information: "ကိုယ့်ပစ္စည်းကို ဝယ်မယ့်သူ (Target Customer) တွေ ဘယ်နေရာမှာ ရှိနေလဲ? စတိုးဆိုင်ဖွင့်ရင် ဘယ်နေရာက လူစည်ကားလဲ?", Tools: "Google Trends, Google Maps" },
+            { Date: "2026/07/02", Category: "အချိန်အခါ အချက်အလက် (Trends & Seasonality)", Information: "လူတွေ ဘယ်အချိန်မှာ ပိုက်ဆံအသုံးဆုံးလဲ? (ဥပမာ - ပွဲတော်ရက်များ၊ လစာထုတ်ရက်)။ ယနေ့ခေတ်မှာ လူတွေ ဘာကို စိတ်ဝင်စားနေကြလဲ?", Tools: "Google Trends, Social Listening" },
+            { Date: "2026/07/03", Category: "အန္တရာယ်နှင့် ပြိုင်ဘက် (Risk & Competitor Intelligence)", Information: "ဈေးကွက်ထဲမှာ ကိုယ့်ထက် အင်အားကြီးတဲ့ ပြိုင်ဘက်က ဘယ်သူတွေလဲ? သူတို့ရဲ့ အားသာချက်/အားနည်းချက်က ဘာလဲ?", Tools: "SEMrush, Similarweb, Ahrefs" },
+            { Date: "2026/07/04", Category: "ဝယ်သူ၏ အမူအကျင့် (Consumer Behavior)", Information: "ဝယ်သူတွေက ပစ္စည်းတစ်ခုကို ဘာကြောင့် ဝယ်ကြတာလဲ? (ဈေးပေါလို့လား၊ နာမည်ကြီးလို့လား၊ အရည်အသွေးကောင်းလို့လား)", Tools: "Google Analytics, Hotjar" },
+            { Date: "2026/07/05", Category: "လုပ်ငန်းလမ်းညွှန် (Roadmap & KPI)", Information: "မိမိလုပ်ငန်း အရှုံးမပေါ်ဘဲ အောင်မြင်ဖို့ လစဉ်၊ နှစ်စဉ် ဘယ်လောက်ရောင်းရမယ်၊ ဘယ်ရည်မှန်းချက် အချက်အလက်တွေ ပြည့်မှီရမယ်ဆိုတဲ့ တိုင်းတာချက်များ", Tools: "Power BI, Tableau, Looker Studio" },
+            { Date: "2026/07/06", Category: "ငွေကြေးလုံခြုံမှုနှင့် အရောင်း (Financial Health & Sales)", Information: "လုပ်ငန်းတစ်ခုလုံး ရုတ်တရက် ရပ်မသွားဖို့ ကုမ္ပဏီမှာ လည်ပတ်ငွေ ဘယ်လောက်ကျန်လဲ၊ အကြွေး ဘယ်လောက်ရှိလဲ", Tools: "POS System, Excel" },
+            { Date: "2026/07/07", Category: "မူဝါဒနှင့် ဥပဒေ (Policy, Legal & Compliance)", Information: "အစိုးရရဲ့ ဥပဒေအပြောင်းအလဲ၊ အခွန်မူဝါဒ၊ နိုင်ငံရေးနှင့် စီးပွားရေး အခြေအနေတွေက ကိုယ့်လုပ်ငန်း သွားမယ့် လမ်းကြောင်းကို ပိတ်ဆို့မလား", Tools: "Bloomberg, Reuters" },
+            { Date: "2026/07/08", Category: "ဆိုက်ဘာလုံခြုံရေး (Data Security)", Information: "ကိုယ့်လုပ်ငန်းရဲ့ ငွေစာရင်းဇယားတွေ၊ ဝယ်သူတွေရဲ့ ကိုယ်ရေးအချက်အလက်တွေ ဟက်ကာ (Hacker) အခိုးမခံရအောင် ဘယ်လို ကာကွယ်ရမလဲ", Tools: "Cloudflare, Fortinet" }
+        ];
+
+        let allData = [];
+        
+        // Chart reference objects to allow clean updates on re-fetch
+        let categoryChartInstance = null;
+        let toolsChartInstance = null;
+        let timelineChartInstance = null;
+
+        // Fetch Data on Load
+        async function fetchData() {
+            toggleLoading(true);
+            const refreshIcon = document.getElementById('refreshIcon');
+            refreshIcon.classList.add('animate-spin');
+
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) throw new Error("API Limit reached or issue with SheetDB");
+                
+                const data = await response.json();
+                
+                if (data && data.length > 0 && !data.error) {
+                    allData = data;
+                    updateUIStatus("Connected directly to Google Sheets", "emerald");
+                } else {
+                    console.log("No data returned or error structure. Loading elegant mock dataset instead.");
+                    allData = MOCK_DATA;
+                    updateUIStatus("Viewing Demo Mode (API Limit or Sheet Empty)", "amber");
+                }
+            } catch (error) {
+                console.error("Fetch Error:", error);
+                allData = MOCK_DATA; // Fallback smoothly
+                updateUIStatus("Viewing Demo Mode (Google Sheet API is offline)", "amber");
+            } finally {
+                toggleLoading(false);
+                refreshIcon.classList.remove('animate-spin');
+                processAndDisplayData();
             }
-        });
-    }
-
-    // Chart 2: Horizontal Bar Chart Rendering
-    function renderToolsChart(toolsData) {
-        const ctx = document.getElementById('toolsChart').getContext('2d');
-
-        if (toolsChartInstance) {
-            toolsChartInstance.destroy();
         }
 
-        // Sort tools by usage count
-        const sortedTools = Object.entries(toolsData)
-            .sort((a, b) => b[1] - a[1])
-            .slice(0, 6); // Top 6 tools
-
-        const labels = sortedTools.map(item => item[0]);
-        const data = sortedTools.map(item => item[1]);
-
-        if(labels.length === 0) {
-            labels.push("ကိရိယာ မရှိသေးပါ");
-            data.push(0);
+        function toggleLoading(isLoading) {
+            const indicator = document.getElementById('loadingIndicator');
+            if (isLoading) {
+                indicator.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i><span>Updating sheets...</span>`;
+                indicator.className = "flex items-center space-x-2 text-xs text-amber-500 font-medium bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-full";
+            }
         }
 
-        toolsChartInstance = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'အသုံးပြုမှု အကြိမ်ရေ',
-                    data: data,
-                    backgroundColor: 'rgba(16, 185, 129, 0.85)',
-                    borderRadius: 6,
-                    borderWidth: 0,
-                    barThickness: 16
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false }
+        function updateUIStatus(message, statusColor) {
+            const indicator = document.getElementById('loadingIndicator');
+            if (statusColor === "emerald") {
+                indicator.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500"></i><span>${message}</span>`;
+                indicator.className = "flex items-center space-x-2 text-xs text-emerald-600 font-medium bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-full";
+            } else if (statusColor === "amber") {
+                indicator.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500"></i><span>${message}</span>`;
+                indicator.className = "flex items-center space-x-2 text-xs text-amber-600 font-medium bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-full animate-pulse";
+            }
+        }
+
+        function processAndDisplayData() {
+            renderStats();
+            buildCharts();
+            filterData();
+        }
+
+        // Card Stats Update
+        function renderStats() {
+            document.getElementById('statTotal').innerText = allData.length;
+            
+            // Unique Category Count
+            const categories = new Set(allData.map(item => item.Category).filter(Boolean));
+            document.getElementById('statCategories').innerText = categories.size;
+
+            // Unique Tools Parsing (Split comma lists)
+            const toolsSet = new Set();
+            allData.forEach(item => {
+                if (item.Tools) {
+                    item.Tools.split(',').forEach(tool => toolsSet.add(tool.trim()));
+                }
+            });
+            document.getElementById('statTools').innerText = toolsSet.size;
+
+            // Find Latest Date entry
+            if (allData.length > 0) {
+                const dates = allData.map(item => new Date(item.Date)).filter(d => !isNaN(d));
+                if (dates.length > 0) {
+                    const latestDate = new Date(Math.max.apply(null, dates));
+                    document.getElementById('statLatest').innerText = latestDate.toLocaleDateString();
+                } else {
+                    document.getElementById('statLatest').innerText = allData[allData.length - 1].Date || "ယနေ့";
+                }
+            } else {
+                document.getElementById('statLatest').innerText = "-";
+            }
+        }
+
+        // Modern Chart Building using Chart.js
+        function buildCharts() {
+            // Category Distribution Map
+            const categoryCounts = {};
+            allData.forEach(item => {
+                if (item.Category) {
+                    categoryCounts[item.Category] = (categoryCounts[item.Category] || 0) + 1;
+                }
+            });
+
+            const categoryLabels = Object.keys(categoryCounts);
+            const categoryValues = Object.values(categoryCounts);
+
+            // Tools Popularity Map
+            const toolsCounts = {};
+            allData.forEach(item => {
+                if (item.Tools) {
+                    item.Tools.split(',').forEach(tool => {
+                        const trimmed = tool.trim();
+                        if (trimmed) {
+                            toolsCounts[trimmed] = (toolsCounts[trimmed] || 0) + 1;
+                        }
+                    });
+                }
+            });
+
+            // Sort tools to get top 5
+            const sortedTools = Object.entries(toolsCounts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5);
+
+            const toolLabels = sortedTools.map(item => item[0]);
+            const toolValues = sortedTools.map(item => item[1]);
+
+            // Date entries count timeline
+            const dateCounts = {};
+            allData.forEach(item => {
+                if (item.Date) {
+                    dateCounts[item.Date] = (dateCounts[item.Date] || 0) + 1;
+                }
+            });
+            
+            // Sort dates logically
+            const sortedDates = Object.keys(dateCounts).sort((a, b) => new Date(a) - new Date(b));
+            const timelineValues = sortedDates.map(date => dateCounts[date]);
+
+            // Destroy previous charts if active
+            if (categoryChartInstance) categoryChartInstance.destroy();
+            if (toolsChartInstance) toolsChartInstance.destroy();
+            if (timelineChartInstance) timelineChartInstance.destroy();
+
+            // Doughnut Chart Definition
+            const ctx1 = document.getElementById('categoryChart').getContext('2d');
+            categoryChartInstance = new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: categoryLabels.map(l => l.split(' ')[0]), // take short label
+                    datasets: [{
+                        data: categoryValues,
+                        backgroundColor: [
+                            'rgba(99, 102, 241, 0.8)',
+                            'rgba(16, 185, 129, 0.8)',
+                            'rgba(245, 158, 11, 0.8)',
+                            'rgba(244, 63, 94, 0.8)',
+                            'rgba(168, 85, 247, 0.8)',
+                            'rgba(14, 165, 233, 0.8)',
+                            'rgba(100, 116, 139, 0.8)'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
                 },
-                scales: {
-                    x: {
-                        grid: { display: false },
-                        ticks: { precision: 0 }
-                    },
-                    y: {
-                        grid: { display: false }
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } }
                     }
                 }
+            });
+
+            // Horizontal Bar Chart Definition
+            const ctx2 = document.getElementById('toolsChart').getContext('2d');
+            toolsChartInstance = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: toolLabels,
+                    datasets: [{
+                        label: 'အသုံးပြုမှု အကြိမ်ရေ',
+                        data: toolValues,
+                        backgroundColor: 'rgba(16, 185, 129, 0.8)',
+                        borderRadius: 6,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { stepSize: 1 } },
+                        y: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // Line Chart Definition
+            const ctx3 = document.getElementById('timelineChart').getContext('2d');
+            timelineChartInstance = new Chart(ctx3, {
+                type: 'line',
+                data: {
+                    labels: sortedDates,
+                    datasets: [{
+                        label: 'တင်သွင်းမှုဒေတာ စုစုပေါင်း',
+                        data: timelineValues,
+                        borderColor: 'rgba(245, 158, 11, 0.8)',
+                        backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 4,
+                        pointBackgroundColor: 'rgba(245, 158, 11, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { grid: { display: false } },
+                        y: { grid: { color: '#f1f5f9' }, ticks: { stepSize: 1 } }
+                    }
+                }
+            });
+        }
+
+        // Live Filtering Logic
+        function filterData() {
+            const searchValue = document.getElementById('searchInput').value.toLowerCase();
+            const categoryValue = document.getElementById('filterCategory').value;
+
+            const filtered = allData.filter(item => {
+                const matchesSearch = 
+                    (item.Information && item.Information.toLowerCase().includes(searchValue)) ||
+                    (item.Tools && item.Tools.toLowerCase().includes(searchValue));
+                
+                const matchesCategory = 
+                    categoryValue === "All" || 
+                    item.Category === categoryValue;
+
+                return matchesSearch && matchesCategory;
+            });
+
+            renderTable(filtered);
+        }
+
+        // Table Render Logic with Aesthetic Styling tags
+        function renderTable(data) {
+            const tableBody = document.getElementById('tableBody');
+            const emptyState = document.getElementById('emptyState');
+            tableBody.innerHTML = '';
+
+            if (data.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            // Display in reverse order (Latest first)
+            [...data].reverse().forEach(row => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50/80 transition duration-150";
+
+                // Map category names to aesthetic colored tags
+                let tagClass = "bg-slate-100 text-slate-700";
+                if (row.Category && row.Category.includes("နေရာပြ")) tagClass = "bg-sky-50 text-sky-700 border border-sky-200";
+                else if (row.Category && row.Category.includes("အချိန်အခါ")) tagClass = "bg-amber-50 text-amber-700 border border-amber-200";
+                else if (row.Category && row.Category.includes("အန္တရာယ်")) tagClass = "bg-rose-50 text-rose-700 border border-rose-200";
+                else if (row.Category && row.Category.includes("အမူအကျင့်")) tagClass = "bg-emerald-50 text-emerald-700 border border-emerald-200";
+                else if (row.Category && row.Category.includes("ငွေကြေး")) tagClass = "bg-purple-50 text-purple-700 border border-purple-200";
+                else if (row.Category && row.Category.includes("ဆိုက်ဘာ")) tagClass = "bg-indigo-50 text-indigo-700 border border-indigo-200";
+
+                // Extract Tools comma string and create individual badge tags
+                const toolsBadges = (row.Tools || "").split(',').map(tool => {
+                    const trimmed = tool.trim();
+                    if (!trimmed) return '';
+                    return `<span class="inline-block bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded mr-1 mb-1">${trimmed}</span>`;
+                }).join('');
+
+                tr.innerHTML = `
+                    <td class="py-3 px-4 text-slate-500 font-medium whitespace-nowrap">${row.Date || '-'}</td>
+                    <td class="py-3 px-4">
+                        <span class="inline-block text-[11px] font-semibold px-2.5 py-1 rounded-full ${tagClass}">
+                            ${row.Category || '-'}
+                        </span>
+                    </td>
+                    <td class="py-3 px-4 text-slate-700 leading-relaxed font-normal">${row.Information || '-'}</td>
+                    <td class="py-3 px-4">${toolsBadges || '-'}</td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        // Form Submit Action (POST to Google Sheet via SheetDB API)
+        document.getElementById('biForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> ပို့ဆောင်နေပါသည်...`;
+            submitBtn.disabled = true;
+
+            const today = new Date();
+            // Format YYYY/MM/DD to maintain sorted order
+            const formattedDate = today.getFullYear() + '/' + 
+                String(today.getMonth() + 1).padStart(2, '0') + '/' + 
+                String(today.getDate()).padStart(2, '0');
+
+            const newRecord = {
+                "Date": formattedDate,
+                "Category": document.getElementById('category').value,
+                "Information": document.getElementById('information').value,
+                "Tools": document.getElementById('tools').value
+            };
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ data: [newRecord] })
+                });
+
+                if (!response.ok) throw new Error("Could not record data");
+
+                alert("ဒေတာအချက်အလက်ကို အောင်မြင်စွာ မှတ်တမ်းတင်ပြီးပါပြီ။");
+                document.getElementById('biForm').reset();
+                
+                // Refresh to fetch actual records including the newly added one
+                fetchData();
+            } catch (error) {
+                console.error("Post error:", error);
+                // Demo addition in case of local mockup or API outage
+                alert("စမ်းသပ်မှုအတွင်း Demo စနစ်ဖြင့် ဒေတာကို ဇယားထဲသို့ တိုက်ရိုက် ထည့်သွင်းပေးလိုက်ပါသည်။");
+                allData.push(newRecord);
+                processAndDisplayData();
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
             }
         });
-    }
 
-    // Helper functions
-    function cleanCategoryName(categoryStr) {
-        // Extract bracket content or clean name for cleaner visualization
-        const match = categoryStr.match(/\(([^)]+)\)/);
-        return match ? match[1] : categoryStr;
-    }
-
-    function truncateString(str, num) {
-        if (!str || str === "-") return "-";
-        if (str.length <= num) return str;
-        return str.slice(0, num) + '...';
-    }
-
-    // Handle Live Submission to Google Sheets through SheetDB API
-    document.getElementById('biForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        const submitBtn = document.getElementById('submitBtn');
-        const origText = submitBtn.innerHTML;
-        submitBtn.innerHTML = `<i class="fa-solid fa-spinner aria-hidden="true" style="animation: spin 1s linear infinite;"></i> စာရင်းသွင်းနေပါသည်...`;
-        submitBtn.disabled = true;
-
-        const dateStr = new Date().toLocaleDateString();
-
-        const payload = {
-            "Date": dateStr,
-            "Category": document.getElementById('category').value,
-            "Information": document.getElementById('information').value,
-            "Tools": document.getElementById('tools').value
-        };
-
-        fetch(API_URL, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ data: [payload] })
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert("ဒေတာအချက်အလက်ကို Google Sheet ထဲသို့ တိုက်ရိုက်အောင်မြင်စွာ ပေးပို့သိမ်းဆည်းပြီးပါပြီ။");
-            document.getElementById('biForm').reset();
-            submitBtn.innerHTML = origText;
-            submitBtn.disabled = false;
-            // Hot reload table & graphs
-            fetchData();
-        })
-        .catch(error => {
-            console.error('Submission failed:', error);
-            alert("ဒေတာပေးပို့မှု မအောင်မြင်ပါ။ စနစ်ချိတ်ဆက်မှုကို ပြန်လည်စစ်ဆေးပါ။");
-            submitBtn.innerHTML = origText;
-            submitBtn.disabled = false;
-        });
-    });
-
-    // Auto load data on landing
-    window.onload = fetchData;
-</script>
-
+        // Initialize Fetching Process on load
+        window.onload = fetchData;
+    </script>
 </body>
 </html>
