@@ -1,5 +1,6 @@
 # KhunPhanDuae7.github.io
 # My Awesome Website
+https://khunphanduae.github.io/khun/
 
 My Awesome Website မှ ကြိုဆိုပါတယ်။ ဤဝဘ်ဆိုဒ်သည် ကျွန်ုပ်၏ ကိုယ်ရေးကိုယ်တာ ပရောဂျက်များနှင့် စိတ်ဝင်စားမှုများကို ပြသထားသည်။
 
