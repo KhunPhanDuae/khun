@@ -52,12 +52,18 @@
             border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
+            transition: background 0.2s;
         }
         .btn-add { background-color: #28a745; color: white; }
-        .btn-txt { background-color: #17a2b8; color: white; }
-        .btn-json { background-color: #6f42c1; color: white; }
         .btn-clear { background-color: #dc3545; color: white; }
+        .btn-sheet { background-color: #0f9d58; color: white; } /* Google Sheets Color */
+        .btn-json { background-color: #6f42c1; color: white; }
         
+        button:disabled {
+            background-color: #cccccc !important;
+            cursor: not-allowed;
+        }
+
         .counter {
             margin-top: 15px;
             font-weight: bold;
@@ -96,15 +102,16 @@
     </div>
 
     <div class="btn-group" style="margin-top: 20px;">
-        <button class="btn-txt" onclick="downloadTXT()">Download .TXT</button>
+        <button id="btnSheet" class="btn-sheet" onclick="uploadToSheet()">Save to Google Sheet</button>
         <button class="btn-json" onclick="downloadJSON()">Download .JSON</button>
     </div>
 </div>
 
 <script>
     let sentences = [];
+    const SHEETDB_API_URL = "https://sheetdb.io/api/v1/e7fhcqei9sorn";
 
-    // Enter Key နှိပ်လျှင်လည်း Add လုပ်ပေးရန်
+    // Enter Key နှိပ်လျှင် Add လုပ်ရန်
     document.getElementById('sentence').addEventListener('keydown', function(e) {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
@@ -114,21 +121,27 @@
 
     function addSentence() {
         let input = document.getElementById('sentence');
-        let text = input.value.trim();
+        let text = input.value.trim().replace(/\s+/g, ' '); 
 
         if (text === "") {
             alert("စာသားတစ်ခုခု အရင်ရိုက်ထည့်ပါဗျာ။");
             return;
         }
 
-        // ဂဏန်းများ ပါမပါ စစ်ဆေးခြင်း (Common Voice စည်းကမ်းအရ)
-        if (/\d/.test(text)) {
+        // ဂဏန်းများ ပါမပါ စစ်ဆေးခြင်း
+        if (/[\d၀-၉]/.test(text)) {
             alert("သတိပေးချက်: စာကြောင်းထဲတွင် ဂဏန်းများမပါဝင်ရပါဗျာ။ စာသားဖြင့်သာ ရေးပေးပါ။");
             return;
         }
 
+        // စာကြောင်း ထပ်နေခြင်း ရှိမရှိ စစ်ဆေးခြင်း
+        if (sentences.includes(text)) {
+            alert("သတိပေးချက်: ဒီစာကြောင်းက ထည့်ပြီးသားဖြစ်နေပါတယ်ဗျာ။");
+            return;
+        }
+
         sentences.push(text);
-        input.value = ""; // Input ကွက်လပ်ကို ရှင်းလင်းရန်
+        input.value = ""; 
         updateUI();
     }
 
@@ -137,14 +150,12 @@
         let list = document.getElementById('previewList');
         list.innerHTML = "";
         
-        // နောက်ဆုံးထည့်ထားတဲ့ စာကြောင်းတွေကို Preview ပြရန်
         sentences.forEach(function(s) {
             let li = document.createElement('li');
             li.innerText = s;
             list.appendChild(li);
         });
         
-        // Preview Box ကို အောက်ဆုံးထိ ဆွဲချပေးရန်
         let box = document.querySelector('.preview-box');
         box.scrollTop = box.scrollHeight;
     }
@@ -156,34 +167,65 @@
         }
     }
 
-    // .TXT ဖိုင်အဖြစ် ဒေါင်းလုဒ်လုပ်ခြင်း
-    function downloadTXT() {
-        if (sentences.length === 0) return alert("ဒေါင်းလုဒ်လုပ်ရန် စာကြောင်းမရှိသေးပါဗျာ။");
-        
-        let txtContent = sentences.join("\n");
-        let blob = new Blob([txtContent], { type: "text/plain;charset=utf-8" });
-        saveFile(blob, "pao_sentences.txt");
+    // Google Sheet သို့ Data တွန်းပို့ခြင်း
+    function uploadToSheet() {
+        if (sentences.length === 0) {
+            alert("Google Sheet သို့ ပို့ရန် စာကြောင်းမရှိသေးပါဗျာ။");
+            return;
+        }
+
+        let btn = document.getElementById('btnSheet');
+        btn.disabled = true;
+        btn.innerText = "Sending...";
+
+        // SheetDB API ၏ Format အတိုင်း 'data' array ထဲမှာ KEY အမည် 'PAOTEXT' ဖြင့် ပြင်ဆင်ခြင်း
+        let payload = {
+            data: sentences.map(s => ({ "PAOTEXT": s }))
+        };
+
+        fetch(SHEETDB_API_URL, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.created) {
+                alert(`အောင်မြင်ပါသည်! စာကြောင်းရေ (${data.created}) ကြောင်းကို Google Sheet ထဲသို့ ထည့်သွင်းပြီးပါပြီ။`);
+                sentences = []; // ပို့ပြီးသားစာကြောင်းများကို စာရင်းထဲမှ ဖျက်သိမ်းခြင်း
+                updateUI();
+            } else {
+                alert("တစ်စုံတစ်ရာ မှားယွင်းနေပါသည်။ စာရွက်စာတမ်း Key (PAOTEXT) မှန်မမှန် ပြန်စစ်ပေးပါ။");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("အင်တာနက်လိုင်း ချိတ်ဆက်မှု သို့မဟုတ် API သို့ ပို့ဆောင်ရာတွင် အခက်အခဲရှိနေပါသည်။");
+        })
+        .finally(() => {
+            btn.disabled = false;
+            btn.innerText = "Save to Google Sheet";
+        });
     }
 
-    // .JSON ဖိုင်အဖြစ် ဒေါင်းလုဒ်လုပ်ခြင်း
+    // Backup အနေဖြင့် .JSON ဒေါင်းလုဒ်လုပ်ရန် ထားရှိခြင်း
     function downloadJSON() {
         if (sentences.length === 0) return alert("ဒေါင်းလုဒ်လုပ်ရန် စာကြောင်းမရှိသေးပါဗျာ။");
         
         let jsonFormat = sentences.map(s => ({
-            text: s,
+            PAOTEXT: s,
             source: "KhunPhanDuae - Pa'O Digital Hub"
         }));
 
         let jsonContent = JSON.stringify(jsonFormat, null, 2);
         let blob = new Blob([jsonContent], { type: "application/json;charset=utf-8" });
-        saveFile(blob, "pao_sentences.json");
-    }
-
-    // Browser မှတစ်ဆင့် ဖိုင်သိမ်းဆည်းရန် Function
-    function saveFile(blob, filename) {
+        
         let link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = filename;
+        link.download = "pao_sentences_backup.json";
         link.click();
         URL.revokeObjectURL(link.href);
     }
