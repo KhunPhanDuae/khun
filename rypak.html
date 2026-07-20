@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RYPAK Web App</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 250px;
+            background-color: #2196F3;
+            color: white;
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .logo-box {
+            background-color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .logo-box span {
+            color: #D32F2F;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar-menu li a {
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            display: block;
+        }
+
+        /* Main Container */
+        .main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .content {
+            padding: 20px 40px;
+        }
+
+        /* Top Header (Search & Account) */
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: #e0e0e0;
+            border: 2px solid #333;
+            border-radius: 25px;
+            padding: 8px 15px;
+            width: 60%;
+            max-width: 500px;
+        }
+
+        .search-bar i {
+            font-size: 18px;
+            margin-right: 10px;
+            color: #333;
+            border-right: 2px solid #333;
+            padding-right: 10px;
+        }
+
+        .search-bar input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        .account-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .account-btn i {
+            font-size: 36px;
+        }
+
+        /* Apps Grid Layout */
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .app-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .app-icon {
+            width: 75px;
+            height: 75px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+            background-color: white;
+            font-size: 32px;
+            color: #2196F3;
+        }
+
+        .app-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .download-btn {
+            color: #2196F3;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .download-btn:hover {
+            text-decoration: underline;
+        }
+
+        /* Loading / Error Message */
+        .loading-text {
+            grid-column: 1 / -1;
+            font-size: 16px;
+            color: #666;
+            margin-top: 20px;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+
+        .footer-links a, .footer-bottom a {
+            color: #666;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 600px) {
+            .sidebar { display: none; } /* ဖုန်းတွင် Sidebar ကို ခေတ္တ ဖျောက်ထားသည် */
+            .content { padding: 15px; }
+            .search-bar { width: 80%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Left Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-box">
+                <i class="fa-solid fa-globe" style="color: #2196F3;"></i>
+                <span>RYPAK</span>
+            </div>
+            <div class="menu-btn"><i class="fa-solid fa-bars"></i></div>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#">new text</a></li>
+            <li><a href="#">new text</a></li>
+            <li><a href="#">new text</a></li>
+            <li><a href="#">new text</a></li>
+            <li><a href="#">new text</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-container">
+        <div class="content">
+            <!-- Header (Search & Profile) -->
+            <div class="top-header">
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchInput" onkeyup="searchApps()" placeholder="">
+                </div>
+                <div class="account-btn">
+                    <i class="fa-solid fa-circle-user"></i>
+                    <span>account</span>
+                </div>
+            </div>
+
+            <!-- Apps Container (API Data မာန် ရောက်လာမည်) -->
+            <div class="apps-grid" id="appsGrid">
+                <div class="loading-text"><i class="fa-solid fa-spinner fa-spin"></i> Python API မှ ဒေတာများ ဆွဲယူနေပါသည်...</div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-links">
+                <a href="#">Terms</a>
+                <a href="#">Privacy</a>
+                <a href="#">Security</a>
+                <a href="#">Status</a>
+                <a href="#">Community</a>
+                <a href="#">Docs</a>
+            </div>
+            <div class="footer-links">
+                <a href="#">Contact</a>
+                <a href="#">Manage cookies</a>
+            </div>
+            <div class="footer-bottom">
+                <a href="#">Do not share my personal information</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript (Python API ကို လှမ်းခေါ်ခြင်း) -->
+    <script>
+        // သင့် Render Python API URL
+        const API_URL = "https://py-api-kfc0.onrender.com/api/apps";
+
+        // Python API ကနေ Data ဆွဲယူမည့် Function
+        async function fetchAppsFromPython() {
+            const appsGrid = document.getElementById('appsGrid');
+
+            try {
+                // API ကို လှမ်းခေါ်ခြင်း
+                let response = await fetch(API_URL);
+                
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+
+                let apps = await response.json();
+
+                // UI ကို အသစ်ပြင်ရန် Grid ကို ရှင်းလင်းပါ
+                appsGrid.innerHTML = "";
+
+                // API မှ ရလာသော Data တစ်ခုချင်းစီအတွက် HTML ထုတ်ပေးခြင်း
+                apps.forEach(app => {
+                    let appCard = `
+                        <div class="app-card">
+                            <div class="app-icon">
+                                <i class="${app.icon || 'fa-solid fa-mobile-screen-button'}"></i>
+                            </div>
+                            <div class="app-title">${app.name || 'App Title'}</div>
+                            <a href="${app.download_url || '#'}" class="download-btn">download</a>
+                        </div>
+                    `;
+                    appsGrid.innerHTML += appCard;
+                });
+
+            } catch (error) {
+                console.error("API Error:", error);
+                // Render Server အိပ်ပျော်နေပါက သို့မဟုတ် API /api/apps Route မရှိသေးပါက Demo Data ကို ပြပေးပါမည်
+                showDemoData();
+            }
+        }
+
+        // Search လုပ်ဆောင်ချက်
+        function searchApps() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let cards = document.getElementsByClassName('app-card');
+
+            for (let i = 0; i < cards.length; i++) {
+                let title = cards[i].getElementsByClassName('app-title')[0].innerText.toLowerCase();
+                cards[i].style.display = title.includes(input) ? "flex" : "none";
+            }
+        }
+
+        // Demo Data ပြသသည့် Function (API အဆင်မပြေပါက သုံးရန်)
+        function showDemoData() {
+            const appsGrid = document.getElementById('appsGrid');
+            appsGrid.innerHTML = `
+                <div class="app-card">
+                    <div class="app-icon" style="color: #00bcd4;"><span style="font-weight:bold;">S!</span></div>
+                    <div class="app-title">SIBANK APP</div>
+                    <a href="#" class="download-btn">download</a>
+                </div>
+                <div class="app-card">
+                    <div class="app-icon" style="color: #4caf50;"><i class="fa-brands fa-android"></i></div>
+                    <div class="app-title">Admin App</div>
+                    <a href="#" class="download-btn">download</a>
+                </div>
+                <div class="app-card">
+                    <div class="app-icon" style="color: #333;"><i class="fa-solid fa-code"></i></div>
+                    <div class="app-title">Digital app</div>
+                    <a href="#" class="download-btn">download</a>
+                </div>
+            `;
+        }
+
+        // စာမျက်နှာ စဖွင့်သည်နှင့် Python API ကို စတင်ခေါ်ယူမည်
+        fetchAppsFromPython();
+    </script>
+</body>
+</html>
