@@ -67,7 +67,7 @@
             display: block;
         }
 
-        /* Main Container */
+        /* Main Area */
         .main-container {
             flex: 1;
             display: flex;
@@ -79,7 +79,7 @@
             padding: 20px 40px;
         }
 
-        /* Top Header (Search & Account) */
+        /* Top Header */
         .top-header {
             display: flex;
             justify-content: space-between;
@@ -129,9 +129,23 @@
         /* Apps Grid Layout */
         .apps-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 25px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        /* Python Status Banner (ထူးခြားသည့်အစိတ်ပိုင်း) */
+        .status-banner {
+            grid-column: 1 / -1;
+            background: #e3f2fd;
+            color: #0d47a1;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            text-align: center;
+            border: 2px solid #90caf9;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .app-card {
@@ -140,7 +154,7 @@
             align-items: center;
             text-align: center;
             background: #f0f0f0;
-            padding: 10px;
+            padding: 12px;
             border-radius: 8px;
         }
 
@@ -155,7 +169,6 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.15);
             background-color: white;
             font-size: 32px;
-            color: #2196F3;
         }
 
         .app-title {
@@ -173,14 +186,6 @@
 
         .download-btn:hover {
             text-decoration: underline;
-        }
-
-        /* Loading / Error Message */
-        .loading-text {
-            grid-column: 1 / -1;
-            font-size: 16px;
-            color: #666;
-            margin-top: 20px;
         }
 
         /* Footer */
@@ -206,7 +211,7 @@
 
         /* Mobile Responsive */
         @media (max-width: 600px) {
-            .sidebar { display: none; } /* ဖုန်းတွင် Sidebar ကို ခေတ္တ ဖျောက်ထားသည် */
+            .sidebar { display: none; }
             .content { padding: 15px; }
             .search-bar { width: 80%; }
         }
@@ -235,7 +240,7 @@
     <!-- Main Content Area -->
     <div class="main-container">
         <div class="content">
-            <!-- Header (Search & Profile) -->
+            <!-- Top Header -->
             <div class="top-header">
                 <div class="search-bar">
                     <i class="fa-solid fa-magnifying-glass"></i>
@@ -247,9 +252,12 @@
                 </div>
             </div>
 
-            <!-- Apps Container (API Data မာန် ရောက်လာမည်) -->
+            <!-- Apps Container -->
             <div class="apps-grid" id="appsGrid">
-                <div class="loading-text"><i class="fa-solid fa-spinner fa-spin"></i> Python API မှ ဒေတာများ ဆွဲယူနေပါသည်...</div>
+                <div style="grid-column: 1 / -1; text-align: center; color: #666; padding: 20px;">
+                    <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
+                    <p style="margin-top: 10px;">Python Backend (Render) မှ ဒေတာများ ဆွဲယူနေပါသည်...</p>
+                </div>
             </div>
         </div>
 
@@ -273,46 +281,56 @@
         </div>
     </div>
 
-    <!-- JavaScript (Python API ကို လှမ်းခေါ်ခြင်း) -->
+    <!-- JavaScript - Python API Fetch -->
     <script>
-        // သင့် Render Python API URL
         const API_URL = "https://py-api-kfc0.onrender.com/api/apps";
 
-        // Python API ကနေ Data ဆွဲယူမည့် Function
         async function fetchAppsFromPython() {
             const appsGrid = document.getElementById('appsGrid');
 
             try {
-                // API ကို လှမ်းခေါ်ခြင်း
+                // Python API ကို လှမ်းခေါ်ခြင်း
                 let response = await fetch(API_URL);
-                
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
+                if (!response.ok) throw new Error("API Response Error");
 
-                let apps = await response.json();
+                let result = await response.json();
 
-                // UI ကို အသစ်ပြင်ရန် Grid ကို ရှင်းလင်းပါ
-                appsGrid.innerHTML = "";
+                // Python မှ ပို့လိုက်သော Data များကို ယူခြင်း
+                let apps = result.apps || [];
+                let serverTime = result.server_time || "N/A";
+                let backendMessage = result.message || "Python Connected!";
 
-                // API မှ ရလာသော Data တစ်ခုချင်းစီအတွက် HTML ထုတ်ပေးခြင်း
+                // UI ကို ရှင်းလင်းပြီး Python Status Banner အရင်ပြခြင်း
+                appsGrid.innerHTML = `
+                    <div class="status-banner">
+                        <i class="fa-solid fa-server"></i> <b>${backendMessage}</b><br>
+                        <small style="color:#555;">Python Live Server Time: <b>${serverTime}</b></small>
+                    </div>
+                `;
+
+                // Python မှ ရလာသော App Card တစ်ခုချင်းစီကို ပုံဖော်ခြင်း
                 apps.forEach(app => {
-                    let appCard = `
+                    let card = `
                         <div class="app-card">
-                            <div class="app-icon">
+                            <div class="app-icon" style="color: ${app.color || '#2196F3'};">
                                 <i class="${app.icon || 'fa-solid fa-mobile-screen-button'}"></i>
                             </div>
-                            <div class="app-title">${app.name || 'App Title'}</div>
+                            <div class="app-title">${app.name}</div>
                             <a href="${app.download_url || '#'}" class="download-btn">download</a>
                         </div>
                     `;
-                    appsGrid.innerHTML += appCard;
+                    appsGrid.innerHTML += card;
                 });
 
             } catch (error) {
-                console.error("API Error:", error);
-                // Render Server အိပ်ပျော်နေပါက သို့မဟုတ် API /api/apps Route မရှိသေးပါက Demo Data ကို ပြပေးပါမည်
-                showDemoData();
+                console.error("Error connecting to Python API:", error);
+                appsGrid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; color: red; padding: 20px;">
+                        <i class="fa-solid fa-triangle-exclamation fa-2x"></i>
+                        <p style="margin-top: 10px;">Python Server ချိတ်ဆက်မှု အဆင်မပြေသေးပါ။</p>
+                        <small style="color:#666;">(Render Free Plan ဖြစ်ပါက Server နိုးလာစေရန် စက္ကန့် ၃၀ ခန့် စောင့်ပြီး Refresh ပြန်လုပ်ပေးပါ)</small>
+                    </div>
+                `;
             }
         }
 
@@ -327,29 +345,7 @@
             }
         }
 
-        // Demo Data ပြသသည့် Function (API အဆင်မပြေပါက သုံးရန်)
-        function showDemoData() {
-            const appsGrid = document.getElementById('appsGrid');
-            appsGrid.innerHTML = `
-                <div class="app-card">
-                    <div class="app-icon" style="color: #00bcd4;"><span style="font-weight:bold;">S!</span></div>
-                    <div class="app-title">SIBANK APP</div>
-                    <a href="#" class="download-btn">download</a>
-                </div>
-                <div class="app-card">
-                    <div class="app-icon" style="color: #4caf50;"><i class="fa-brands fa-android"></i></div>
-                    <div class="app-title">Admin App</div>
-                    <a href="#" class="download-btn">download</a>
-                </div>
-                <div class="app-card">
-                    <div class="app-icon" style="color: #333;"><i class="fa-solid fa-code"></i></div>
-                    <div class="app-title">Digital app</div>
-                    <a href="#" class="download-btn">download</a>
-                </div>
-            `;
-        }
-
-        // စာမျက်နှာ စဖွင့်သည်နှင့် Python API ကို စတင်ခေါ်ယူမည်
+        // စာမျက်နှာ စပွင့်သည်နှင့် Python API ကို စတင် ခေါ်ယူမည်
         fetchAppsFromPython();
     </script>
 </body>
