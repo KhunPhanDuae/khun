@@ -24,7 +24,7 @@
 
         /* Sidebar Styling */
         .sidebar {
-            width: 250px;
+            width: 280px;
             background-color: #2196F3;
             color: white;
             padding: 20px 15px;
@@ -38,7 +38,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .logo-box {
@@ -66,14 +66,22 @@
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 12px;
+            overflow-y: auto;
+            max-height: calc(100vh - 100px);
         }
 
         .sidebar-menu li a {
             color: white;
             text-decoration: none;
-            font-size: 18px;
+            font-size: 15px;
             display: block;
+            padding: 4px 0;
+            transition: opacity 0.2s;
+        }
+
+        .sidebar-menu li a:hover {
+            opacity: 0.8;
         }
 
         /* Main Container */
@@ -86,7 +94,7 @@
         }
 
         .content {
-            padding: 20px 40px;
+            padding: 20px 30px;
         }
 
         /* Top Header */
@@ -98,7 +106,6 @@
             gap: 10px;
         }
 
-        /* ဖုန်းမှာ ပေါ်လာမည့် Mobile Menu Toggle Button */
         .mobile-menu-btn {
             display: none;
             font-size: 24px;
@@ -187,20 +194,21 @@
             margin-bottom: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.15);
             background-color: white;
-            font-size: 30px;
+            font-size: 28px;
         }
 
         .app-title {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
             color: #333;
             margin-bottom: 4px;
+            word-break: break-word;
         }
 
         .download-btn {
             color: #2196F3;
             text-decoration: none;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         /* Footer */
@@ -224,7 +232,6 @@
             font-size: 13px;
         }
 
-        /* Overlay Background (ဖုန်းမှာ Menu ပွင့်လာပါက နောက်ခံကို မှောင်စေရန်) */
         .overlay {
             display: none;
             position: fixed;
@@ -233,26 +240,26 @@
             z-index: 999;
         }
 
-        /* 📱 Mobile Responsive CSS (ဖုန်းများအတွက် ပြင်ဆင်ချက်) */
+        /* 📱 Mobile Responsive CSS */
         @media (max-width: 768px) {
             .sidebar {
                 position: fixed;
                 top: 0;
-                left: -260px; /* အစတွင် ဘေးသို့ ပုန်းနေမည် */
+                left: -290px;
                 height: 100vh;
                 box-shadow: 2px 0 10px rgba(0,0,0,0.2);
             }
 
             .sidebar.active {
-                left: 0; /* Menu နှိပ်လိုက်ပါက ထွက်လာမည် */
+                left: 0;
             }
 
             .close-btn {
-                display: block; /* ဖုန်းမှာ ပိတ်သည့် X ခလုတ်ပြမည် */
+                display: block;
             }
 
             .mobile-menu-btn {
-                display: block; /* ဖုန်းမှာ Hamburger icon ပြမည် */
+                display: block;
             }
 
             .content {
@@ -260,7 +267,7 @@
             }
 
             .apps-grid {
-                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
                 gap: 15px;
             }
         }
@@ -282,12 +289,20 @@
                 <i class="fa-solid fa-xmark"></i>
             </div>
         </div>
+        <!-- ဘေးမနူး စာရင်းများ -->
         <ul class="sidebar-menu">
-            <li><a href="#">new text</a></li>
-            <li><a href="#">new text</a></li>
-            <li><a href="#">new text</a></li>
-            <li><a href="#">new text</a></li>
-            <li><a href="#">new text</a></li>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">RYPAK</a></li>
+            <li><a href="#">Successimprove</a></li>
+            <li><a href="#">LayVan</a></li>
+            <li><a href="#">SI KraungTan</a></li>
+            <li><a href="#">SI MunVan</a></li>
+            <li><a href="#">SI HtongJwuJwu</a></li>
+            <li><a href="#">Pa'O Digital Hub(SI)</a></li>
+            <li><a href="#">Pa'O Dictionary (SI)</a></li>
+            <li><a href="#">SI Bank App</a></li>
+            <li><a href="#">SI Delivery Service</a></li>
+            <li><a href="#">SI Small Businesses</a></li>
         </ul>
     </div>
 
@@ -296,14 +311,13 @@
         <div class="content">
             <!-- Top Header -->
             <div class="top-header">
-                <!-- ဖုန်းမှာ နှိပ်ရန် မီးနူး ခလုတ် -->
                 <div class="mobile-menu-btn" onclick="toggleSidebar()">
                     <i class="fa-solid fa-bars"></i>
                 </div>
 
                 <div class="search-bar">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="searchInput" onkeyup="searchApps()" placeholder="">
+                    <input type="text" id="searchInput" onkeyup="searchApps()" placeholder="App ရှာရန်...">
                 </div>
 
                 <div class="account-btn">
@@ -316,7 +330,7 @@
             <div class="apps-grid" id="appsGrid">
                 <div style="grid-column: 1 / -1; text-align: center; color: #666; padding: 20px;">
                     <i class="fa-solid fa-spinner fa-spin fa-2x"></i>
-                    <p style="margin-top: 10px;">Python Backend (Render) မှ ဒေတာများ ဆွဲယူနေပါသည်...</p>
+                    <p style="margin-top: 10px;">Python Backend မှ ဒေတာများ ဆွဲယူနေပါသည်...</p>
                 </div>
             </div>
         </div>
@@ -345,66 +359,67 @@
     <script>
         const API_URL = "https://py-api-kfc0.onrender.com/api/apps";
 
-        // ဖုန်းမှာ Sidebar ကို ဖွင့်/ပိတ် မည့် Function
+        // ပုံမှန် အက်ပ်များနှင့် အသစ်တောင်းဆိုထားသော အက်ပ် (၅) ခု ဒေတာများ
+        const defaultApps = [
+            { name: "SIBANK APP", icon: "fa-solid fa-dollar-sign", color: "#00bcd4" },
+            { name: "Admin App", icon: "fa-brands fa-android", color: "#4caf50" },
+            { name: "Digital app", icon: "fa-solid fa-code", color: "#212121" },
+            // အသစ်ထည့်သွင်းလိုက်သော အက်ပ်များ
+            { name: "ဒေါ့ꩻရီ.App", icon: "fa-solid fa-comments", color: "#e91e63" },
+            { name: "နယ်ꩻခြိုင်းခြိုꩻ.App", icon: "fa-solid fa-screwdriver-wrench", color: "#ff9800" },
+            { name: "Pa'O Dictionary.App", icon: "fa-solid fa-book-bookmark", color: "#9c27b0" },
+            { name: "SI shop.App", icon: "fa-solid fa-cart-shopping", color: "#3f51b5" },
+            { name: "စာရင်းနှင့်သတင်းအချက်လက်ကြည့်တဲ့.App", icon: "fa-solid fa-chart-line", color: "#009688" }
+        ];
+
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('overlay');
-            
             sidebar.classList.toggle('active');
-            
-            if (sidebar.classList.contains('active')) {
-                overlay.style.display = 'block';
-            } else {
-                overlay.style.display = 'none';
-            }
+            overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
         }
 
-        // Python API Fetch Function
         async function fetchAppsFromPython() {
             const appsGrid = document.getElementById('appsGrid');
 
             try {
                 let response = await fetch(API_URL);
-                if (!response.ok) throw new Error("API Response Error");
-
                 let result = await response.json();
 
-                let apps = result.apps || [];
                 let serverTime = result.server_time || "N/A";
                 let backendMessage = result.message || "Python Connected!";
 
-                appsGrid.innerHTML = `
-                    <div class="status-banner">
-                        <i class="fa-solid fa-server"></i> <b>${backendMessage}</b><br>
-                        <small style="color:#555;">Python Live Server Time: <b>${serverTime}</b></small>
-                    </div>
-                `;
-
-                apps.forEach(app => {
-                    let card = `
-                        <div class="app-card">
-                            <div class="app-icon" style="color: ${app.color || '#2196F3'};">
-                                <i class="${app.icon || 'fa-solid fa-mobile-screen-button'}"></i>
-                            </div>
-                            <div class="app-title">${app.name}</div>
-                            <a href="${app.download_url || '#'}" class="download-btn">download</a>
-                        </div>
-                    `;
-                    appsGrid.innerHTML += card;
-                });
+                renderApps(defaultApps, backendMessage, serverTime);
 
             } catch (error) {
-                console.error("Error connecting to Python API:", error);
-                appsGrid.innerHTML = `
-                    <div style="grid-column: 1 / -1; text-align: center; color: red; padding: 20px;">
-                        <i class="fa-solid fa-triangle-exclamation fa-2x"></i>
-                        <p style="margin-top: 10px;">Python Server ချိတ်ဆက်မှု အဆင်မပြေသေးပါ။</p>
-                    </div>
-                `;
+                console.log("Python API ရယူ၍ မရသေးပါ၊ Demo UI ပြပါမည်။");
+                renderApps(defaultApps, "🔥 Dynamic Frontend Active (Demo Mode)", "Offline / Local Time");
             }
         }
 
-        // Search Function
+        function renderApps(apps, message, serverTime) {
+            const appsGrid = document.getElementById('appsGrid');
+            appsGrid.innerHTML = `
+                <div class="status-banner">
+                    <i class="fa-solid fa-server"></i> <b>${message}</b><br>
+                    <small style="color:#555;">Python Live Server Time: <b>${serverTime}</b></small>
+                </div>
+            `;
+
+            apps.forEach(app => {
+                let card = `
+                    <div class="app-card">
+                        <div class="app-icon" style="color: ${app.color};">
+                            <i class="${app.icon}"></i>
+                        </div>
+                        <div class="app-title">${app.name}</div>
+                        <a href="#" class="download-btn" onclick="alert('${app.name} ကို ဒေါင်းလုဒ်ဆွဲနေပါပြီ...')">download</a>
+                    </div>
+                `;
+                appsGrid.innerHTML += card;
+            });
+        }
+
         function searchApps() {
             let input = document.getElementById('searchInput').value.toLowerCase();
             let cards = document.getElementsByClassName('app-card');
