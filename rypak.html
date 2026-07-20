@@ -19,6 +19,7 @@
             display: flex;
             min-height: 100vh;
             background-color: #f0f0f0;
+            position: relative;
         }
 
         /* Sidebar Styling */
@@ -29,6 +30,8 @@
             padding: 20px 15px;
             display: flex;
             flex-direction: column;
+            transition: all 0.3s ease;
+            z-index: 1000;
         }
 
         .sidebar-header {
@@ -53,6 +56,12 @@
             font-size: 18px;
         }
 
+        .close-btn {
+            display: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
         .sidebar-menu {
             list-style: none;
             display: flex;
@@ -63,16 +72,17 @@
         .sidebar-menu li a {
             color: white;
             text-decoration: none;
-            font-size: 20px;
+            font-size: 18px;
             display: block;
         }
 
-        /* Main Area */
+        /* Main Container */
         .main-container {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            width: 100%;
         }
 
         .content {
@@ -84,7 +94,17 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+            gap: 10px;
+        }
+
+        /* ဖုန်းမှာ ပေါ်လာမည့် Mobile Menu Toggle Button */
+        .mobile-menu-btn {
+            display: none;
+            font-size: 24px;
+            color: #2196F3;
+            cursor: pointer;
+            padding: 5px;
         }
 
         .search-bar {
@@ -94,7 +114,7 @@
             border: 2px solid #333;
             border-radius: 25px;
             padding: 8px 15px;
-            width: 60%;
+            flex: 1;
             max-width: 500px;
         }
 
@@ -123,7 +143,7 @@
         }
 
         .account-btn i {
-            font-size: 36px;
+            font-size: 32px;
         }
 
         /* Apps Grid Layout */
@@ -134,18 +154,17 @@
             margin-top: 10px;
         }
 
-        /* Python Status Banner (ထူးခြားသည့်အစိတ်ပိုင်း) */
+        /* Python Status Banner */
         .status-banner {
             grid-column: 1 / -1;
             background: #e3f2fd;
             color: #0d47a1;
-            padding: 15px;
+            padding: 12px;
             border-radius: 8px;
             margin-bottom: 15px;
             font-size: 14px;
             text-align: center;
-            border: 2px solid #90caf9;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #90caf9;
         }
 
         .app-card {
@@ -159,8 +178,8 @@
         }
 
         .app-icon {
-            width: 75px;
-            height: 75px;
+            width: 70px;
+            height: 70px;
             border-radius: 12px;
             display: flex;
             justify-content: center;
@@ -168,7 +187,7 @@
             margin-bottom: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.15);
             background-color: white;
-            font-size: 32px;
+            font-size: 30px;
         }
 
         .app-title {
@@ -182,10 +201,6 @@
             color: #2196F3;
             text-decoration: none;
             font-size: 13px;
-        }
-
-        .download-btn:hover {
-            text-decoration: underline;
         }
 
         /* Footer */
@@ -209,24 +224,63 @@
             font-size: 13px;
         }
 
-        /* Mobile Responsive */
-        @media (max-width: 600px) {
-            .sidebar { display: none; }
-            .content { padding: 15px; }
-            .search-bar { width: 80%; }
+        /* Overlay Background (ဖုန်းမှာ Menu ပွင့်လာပါက နောက်ခံကို မှောင်စေရန်) */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+
+        /* 📱 Mobile Responsive CSS (ဖုန်းများအတွက် ပြင်ဆင်ချက်) */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: -260px; /* အစတွင် ဘေးသို့ ပုန်းနေမည် */
+                height: 100vh;
+                box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+            }
+
+            .sidebar.active {
+                left: 0; /* Menu နှိပ်လိုက်ပါက ထွက်လာမည် */
+            }
+
+            .close-btn {
+                display: block; /* ဖုန်းမှာ ပိတ်သည့် X ခလုတ်ပြမည် */
+            }
+
+            .mobile-menu-btn {
+                display: block; /* ဖုန်းမှာ Hamburger icon ပြမည် */
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .apps-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 15px;
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- Overlay Screen -->
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
     <!-- Left Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="logo-box">
                 <i class="fa-solid fa-globe" style="color: #2196F3;"></i>
                 <span>RYPAK</span>
             </div>
-            <div class="menu-btn"><i class="fa-solid fa-bars"></i></div>
+            <div class="close-btn" onclick="toggleSidebar()">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
         </div>
         <ul class="sidebar-menu">
             <li><a href="#">new text</a></li>
@@ -242,13 +296,19 @@
         <div class="content">
             <!-- Top Header -->
             <div class="top-header">
+                <!-- ဖုန်းမှာ နှိပ်ရန် မီးနူး ခလုတ် -->
+                <div class="mobile-menu-btn" onclick="toggleSidebar()">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+
                 <div class="search-bar">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" id="searchInput" onkeyup="searchApps()" placeholder="">
                 </div>
+
                 <div class="account-btn">
                     <i class="fa-solid fa-circle-user"></i>
-                    <span>account</span>
+                    <span style="font-size: 11px;">account</span>
                 </div>
             </div>
 
@@ -281,26 +341,38 @@
         </div>
     </div>
 
-    <!-- JavaScript - Python API Fetch -->
+    <!-- JavaScript -->
     <script>
         const API_URL = "https://py-api-kfc0.onrender.com/api/apps";
 
+        // ဖုန်းမှာ Sidebar ကို ဖွင့်/ပိတ် မည့် Function
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            
+            sidebar.classList.toggle('active');
+            
+            if (sidebar.classList.contains('active')) {
+                overlay.style.display = 'block';
+            } else {
+                overlay.style.display = 'none';
+            }
+        }
+
+        // Python API Fetch Function
         async function fetchAppsFromPython() {
             const appsGrid = document.getElementById('appsGrid');
 
             try {
-                // Python API ကို လှမ်းခေါ်ခြင်း
                 let response = await fetch(API_URL);
                 if (!response.ok) throw new Error("API Response Error");
 
                 let result = await response.json();
 
-                // Python မှ ပို့လိုက်သော Data များကို ယူခြင်း
                 let apps = result.apps || [];
                 let serverTime = result.server_time || "N/A";
                 let backendMessage = result.message || "Python Connected!";
 
-                // UI ကို ရှင်းလင်းပြီး Python Status Banner အရင်ပြခြင်း
                 appsGrid.innerHTML = `
                     <div class="status-banner">
                         <i class="fa-solid fa-server"></i> <b>${backendMessage}</b><br>
@@ -308,7 +380,6 @@
                     </div>
                 `;
 
-                // Python မှ ရလာသော App Card တစ်ခုချင်းစီကို ပုံဖော်ခြင်း
                 apps.forEach(app => {
                     let card = `
                         <div class="app-card">
@@ -328,13 +399,12 @@
                     <div style="grid-column: 1 / -1; text-align: center; color: red; padding: 20px;">
                         <i class="fa-solid fa-triangle-exclamation fa-2x"></i>
                         <p style="margin-top: 10px;">Python Server ချိတ်ဆက်မှု အဆင်မပြေသေးပါ။</p>
-                        <small style="color:#666;">(Render Free Plan ဖြစ်ပါက Server နိုးလာစေရန် စက္ကန့် ၃၀ ခန့် စောင့်ပြီး Refresh ပြန်လုပ်ပေးပါ)</small>
                     </div>
                 `;
             }
         }
 
-        // Search လုပ်ဆောင်ချက်
+        // Search Function
         function searchApps() {
             let input = document.getElementById('searchInput').value.toLowerCase();
             let cards = document.getElementsByClassName('app-card');
@@ -345,7 +415,6 @@
             }
         }
 
-        // စာမျက်နှာ စပွင့်သည်နှင့် Python API ကို စတင် ခေါ်ယူမည်
         fetchAppsFromPython();
     </script>
 </body>
