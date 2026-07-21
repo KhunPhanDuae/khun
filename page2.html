@@ -230,6 +230,208 @@
         URL.revokeObjectURL(link.href);
     }
 </script>
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ပအိုဝ်ႏ အသံ+စာသား ဒေတာ စုဆောင်းရေး Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 15px;
+            color: #333;
+        }
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 6px;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+        textarea {
+            resize: vertical;
+            height: 70px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-record { background-color: #e74c3c; color: white; }
+        .btn-stop { background-color: #7f8c8d; color: white; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        audio {
+            width: 100%;
+            margin-top: 15px;
+        }
+        .status {
+            margin-top: 12px;
+            font-size: 13px;
+            color: #27ae60;
+            font-weight: bold;
+            text-align: center;
+        }
+        .csv-box {
+            background: #f8f9fa;
+            border: 1px dashed #bbb;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
 
+<div class="container">
+    <h2>ပအိုဝ်ႏ အသံ + CSV ဒေတာ စုဆောင်းရေး</h2>
+
+    <div class="form-group">
+        <label>၁။ အသံဖိုင် နာမည်ရိုက်ပါ (Filename):</label>
+        <input type="text" id="fileNameInput" placeholder="ဥပမာ - paoh_01">
+    </div>
+
+    <div class="form-group">
+        <label>၂။ တွဲမယ့် ပအိုဝ်ႏစာသား ရိုက်ပါ (Transcript):</label>
+        <textarea id="paohTextInput" placeholder="ဥပမာ - မင်္ဂလာႏဒျာႏဩ"></textarea>
+    </div>
+
+    <div class="btn-group">
+        <button id="recordBtn" class="btn-record">🎙️ အသံဖမ်းမည်</button>
+        <button id="stopBtn" class="btn-stop" disabled>⏹️ ရပ်မည်</button>
+    </div>
+
+    <div class="status" id="statusText"></div>
+    <audio id="audioPreview" controls style="display:none;"></audio>
+
+    <div class="csv-box">
+        <strong>စုဆောင်းရရှိထားသော CSV ဒေတာများ:</strong>
+        <pre id="csvPreview" style="margin:5px 0 0 0; white-space: pre-wrap;">file_name,text</pre>
+    </div>
+</div>
+
+<script>
+    let mediaRecorder;
+    let audioChunks = [];
+    let csvContent = "file_name,text\n"; // CSV Header
+
+    const fileNameInput = document.getElementById('fileNameInput');
+    const paohTextInput = document.getElementById('paohTextInput');
+    const recordBtn = document.getElementById('recordBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const audioPreview = document.getElementById('audioPreview');
+    const statusText = document.getElementById('statusText');
+    const csvPreview = document.getElementById('csvPreview');
+
+    recordBtn.addEventListener('click', async () => {
+        const fileName = fileNameInput.value.trim();
+        const paohText = paohTextInput.value.trim();
+
+        // Check validation
+        if (!fileName || !paohText) {
+            alert("အသံဖိုင်နာမည်နဲ့ စာသားကို အရင် ရိုက်ထည့်ပေးပါဗျ။");
+            return;
+        }
+
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+
+            mediaRecorder.ondataavailable = event => {
+                audioChunks.push(event.data);
+            };
+
+            mediaRecorder.onstop = () => {
+                // 1. WAV Audio Download
+                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                const audioUrl = URL.createObjectURL(audioBlob);
+                audioPreview.src = audioUrl;
+                audioPreview.style.display = "block";
+
+                const fullAudioName = `${fileName}.wav`;
+                const aAudio = document.createElement('a');
+                aAudio.href = audioUrl;
+                aAudio.download = fullAudioName;
+                aAudio.click();
+
+                // 2. CSV Line Update & Download
+                const newCsvLine = `${fullAudioName},"${paohText}"\n`;
+                csvContent += newCsvLine;
+                csvPreview.textContent = csvContent;
+
+                const csvBlob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const csvUrl = URL.createObjectURL(csvBlob);
+                const aCsv = document.createElement('a');
+                aCsv.href = csvUrl;
+                aCsv.download = "metadata.csv";
+                aCsv.click();
+
+                statusText.textContent = `✓ ${fullAudioName} နဲ့ metadata.csv ဖိုင် ဒေါင်းလုဒ်ဆွဲပြီးပါပြီ!`;
+
+                // Clear input for next entry
+                fileNameInput.value = "";
+                paohTextInput.value = "";
+            };
+
+            mediaRecorder.start();
+            recordBtn.disabled = true;
+            stopBtn.disabled = false;
+            statusText.textContent = "● အသံဖမ်းနေပါသည်...";
+            statusText.style.color = "#e74c3c";
+        } catch (err) {
+            alert("မိုက်ခရိုဖုန်း အသုံးပြုခွင့် ပေးပါရန်။");
+        }
+    });
+
+    stopBtn.addEventListener('click', () => {
+        mediaRecorder.stop();
+        recordBtn.disabled = false;
+        stopBtn.disabled = true;
+        statusText.style.color = "#27ae60";
+    });
+</script>
+
+</body>
+</html>
+    
 </body>
 </html>
