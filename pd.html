@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ပအိုဝ်း ထင်ရှားသော Software Developer များ</title>
+    <style>
+        :root {
+            --bg-main: #0d1117;
+            --card-bg: #161b22;
+            --card-border: #30363d;
+            --text-primary: #f0f6fc;
+            --text-secondary: #8b949e;
+            --accent-gold: #ffd700;
+            --accent-silver: #c0c0c0;
+            --accent-bronze: #cd7f32;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Pyidaungsu', 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.5;
+            padding: 24px 16px;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        /* 🌟 Modern Glassmorphic Cyber Hero Banner 🌟 */
+        .header-banner {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 28px 24px;
+            margin-bottom: 24px;
+            position: relative;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        /* Ambient Blue Glow Effect */
+        .header-banner::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.25) 0%, rgba(0, 0, 0, 0) 70%);
+            pointer-events: none;
+        }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(90deg, rgba(245, 158, 11, 0.2) 0%, rgba(239, 68, 68, 0.2) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            color: #fbbf24;
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .header-banner h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+
+        .header-banner p {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        .stats-highlight {
+            color: #38bdf8;
+            font-weight: 700;
+            background: rgba(56, 189, 248, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .dev-item {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+
+        .dev-item:hover {
+            border-color: #58a6ff;
+            background-color: #1c2128;
+            transform: translateX(3px);
+        }
+
+        .left-part {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .rank-num {
+            font-size: 0.9rem;
+            font-weight: 700;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #21262d;
+            color: var(--text-secondary);
+            border: 1px solid var(--card-border);
+            flex-shrink: 0;
+        }
+
+        .rank-1 .rank-num {
+            background-color: rgba(255, 215, 0, 0.15);
+            color: var(--accent-gold);
+            border-color: rgba(255, 215, 0, 0.4);
+        }
+        .rank-2 .rank-num {
+            background-color: rgba(192, 192, 192, 0.15);
+            color: var(--accent-silver);
+            border-color: rgba(192, 192, 192, 0.4);
+        }
+        .rank-3 .rank-num {
+            background-color: rgba(205, 127, 50, 0.15);
+            color: var(--accent-bronze);
+            border-color: rgba(205, 127, 50, 0.4);
+        }
+
+        .info-block {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .dev-name-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dev-name {
+            font-size: 0.98rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .sub-name {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+        }
+
+        .app-title {
+            font-size: 0.85rem;
+            color: var(--accent-blue);
+        }
+
+        .right-part {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .points-tag {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--accent-green);
+            background: rgba(63, 185, 80, 0.1);
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(63, 185, 80, 0.2);
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid var(--card-border);
+        }
+
+        @media (max-width: 520px) {
+            .dev-item {
+                padding: 10px 14px;
+            }
+            .right-part {
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header Banner အသစ် -->
+    <div class="header-banner">
+        <div class="header-badge">⚡ Pa'O Tech Directory</div>
+        <h1>ထင်ရှားသော ပအိုဝ်း Software Developer များ</h1>
+        <p>
+            ပအိုဝ်းလူဦးရေ <span class="stats-highlight">၁.၁ သန်းခန့်</span> အတွင်းမှ နည်းပညာနယ်ပယ်တွင် ထူးချွန်ထင်ရှားစွာ ပံ့ပိုးကူညီနေသော Developer များကို အများပြည်သူ ဝင်ရောက်လေ့လာနိုင်ရန် မီးမောင်းထိုး ဂုဏ်ပြုဖော်ပြထားသော စာရင်းဖြစ်ပါသည်။
+        </p>
+    </div>
+
+    <div class="list-container" id="developerList">
+        <!-- JS dynamically renders list -->
+    </div>
+
+    <div class="footer-note">
+        ✨ အမှတ်များပြောင်းလဲမှုပေါ်မူတည်၍ အစဉ်လိုက် (Rank) အလိုအလျောက် ပြောင်းလဲပါမည်။
+    </div>
+</div>
+
+<script>
+    const developers = [
+        { name: "ခွန်ထက်နိုင်", sub: "", app: "zFont App", points: 3000 },
+        { name: "Khon Soe Zaw Thu", sub: "", app: "Pa'O Calendar App", points: 2800 },
+        { name: "TeeReeRee", sub: "", app: "ပအိုဝ်ႏလိတ်မွူးစောင်ႏ App", points: 2600 },
+        { name: "Khun Soe Moe Aung", sub: "", app: "Pa'O Dictionary", points: 2400 },
+        { name: "ခွန်အား", sub: "ခွန်ပန်းစိန်", app: "PaO Lake", points: 2200 },
+        { name: "Khunmarana", sub: "", app: "Myanmar Paoh Dictionary App", points: 2000 },
+        { name: "Khun Sai La Tun", sub: "Royal Play", app: "PaGameShop App", points: 1800 },
+        { name: "ခွန်ဖန်ဒွဲ့", sub: "", app: "ဒေါ့ꩻရီ App", points: 910 },
+        { name: "ခွန်စိုးလွင်", sub: "နောင်ဟွိုꩻ", app: "Paoh Song App", points: 640 },
+        { name: "ခွန်အောင်ႏထို", sub: "", app: "ပအိုဝ်းဘာသာစကားလေ့လာတဲ့ App", points: 530 }
+    ];
+
+    function renderList() {
+        const container = document.getElementById('developerList');
+        const sorted = [...developers].sort((a, b) => b.points - a.points);
+
+        container.innerHTML = sorted.map((dev, idx) => {
+            const rank = idx + 1;
+            let rankClass = '';
+            if (rank === 1) rankClass = 'rank-1';
+            else if (rank === 2) rankClass = 'rank-2';
+            else if (rank === 3) rankClass = 'rank-3';
+
+            const subText = dev.sub ? `<span class="sub-name">(${dev.sub})</span>` : '';
+
+            return `
+                <div class="dev-item ${rankClass}">
+                    <div class="left-part">
+                        <div class="rank-num">#${rank}</div>
+                        <div class="info-block">
+                            <div class="dev-name-row">
+                                <span class="dev-name">${dev.name}</span>
+                                ${subText}
+                            </div>
+                            <div class="app-title">📱 ${dev.app}</div>
+                        </div>
+                    </div>
+                    <div class="right-part">
+                        <div class="points-tag">⭐ ${dev.points.toLocaleString()} pts</div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    renderList();
+</script>
+
+</body>
+</html>
